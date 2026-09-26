@@ -8,41 +8,63 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'surface': '#131313',
-        'surface-dim': '#131313',
-        'surface-bright': '#3a3939',
-        'surface-container-lowest': '#0e0e0e',
-        'surface-container-low': '#1c1b1b',
-        'surface-container': '#201f1f',
-        'surface-container-high': '#2a2a2a',
-        'surface-container-highest': '#353534',
-        'on-surface': '#e5e2e1',
-        'on-surface-variant': '#e5beb2',
-        'inverse-surface': '#e5e2e1',
-        'inverse-on-surface': '#313030',
-        'outline': '#ac897e',
-        'outline-variant': '#5c4037',
+        // --- PALETA DE FONDOS Y SUPERFICIES (Gris Asfalto / Carbón Deportivo) ---
+        'background': '#18191c',                 // Fondo base general: gris carbón oscuro, adiós al negro puro
+        'on-background': '#f1f3f5',              // Texto principal sobre fondo base
+        
+        'surface': '#18191c',                    // Superficie base
+        'surface-dim': '#141518',                // Superficie atenuada
+        'surface-bright': '#383a42',             // Superficie iluminada
+        
+        'surface-container-lowest': '#121316',   // Nivel más profundo para secciones de contraste (Hero, Footer)
+        'surface-container-low': '#202227',      // Tarjetas principales, panel de sedes, acordeones FAQ
+        'surface-container': '#282a31',          // Inputs, contenedores de iconos interactivos
+        'surface-container-high': '#32353e',     // Estados hover y botones secundarios
+        'surface-container-highest': '#3e414c',  // Relieves y bordes destacados
+        'surface-variant': '#32353e',            // Variante de superficie
+        
+        'on-surface': '#f3f4f6',                 // Texto principal de titulares y tarjetas
+        'on-surface-variant': '#cbd0d8',         // Texto secundario (metadatos, párrafos, subtítulos)
+        'inverse-surface': '#f1f3f5',
+        'inverse-on-surface': '#18191c',
+        
+        'outline': '#4b4f5a',                    // Bordes sutiles y definidos
+        'outline-variant': '#363942',            // Bordes tenues
         'surface-tint': '#ffb59c',
+        
+        // --- IDENTIDAD NARANJA Y ACENTOS (ESTRICTAMENTE INTOCABLES) ---
         'primary': '#ffb59c',
         'on-primary': '#5c1900',
         'primary-container': '#ff5708',
         'on-primary-container': '#511500',
         'inverse-primary': '#aa3600',
+        'primary-fixed': '#ffdbcf',
+        'primary-fixed-dim': '#ffb59c',
+        'on-primary-fixed': '#390c00',
+        'on-primary-fixed-variant': '#822700',
+        
         'secondary': '#ffdb9f',
         'on-secondary': '#422d00',
         'secondary-container': '#ffb700',
         'on-secondary-container': '#6b4b00',
+        'secondary-fixed': '#ffdea9',
+        'secondary-fixed-dim': '#ffba26',
+        'on-secondary-fixed': '#271900',
+        'on-secondary-fixed-variant': '#5e4100',
+        
         'tertiary': '#ffb68e',
         'on-tertiary': '#542200',
         'tertiary-container': '#eb6b01',
         'on-tertiary-container': '#491d00',
+        'tertiary-fixed': '#ffdbca',
+        'tertiary-fixed-dim': '#ffb68e',
+        'on-tertiary-fixed': '#331200',
+        'on-tertiary-fixed-variant': '#773300',
+        
         'error': '#ffb4ab',
         'on-error': '#690005',
         'error-container': '#93000a',
-        'on-error-container': '#ffdad6',
-        'background': '#131313',
-        'on-background': '#e5e2e1',
-        'surface-variant': '#353534'
+        'on-error-container': '#ffdad6'
       },
       borderRadius: {
         'DEFAULT': '0.125rem',

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Landing page oficial de Karasuno Voley Club - Voleibol Formativo y Competitivo en Lima",
   "scripts": {
+    "start": "python -m http.server 3000",
     "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "watch:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
   },
