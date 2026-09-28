@@ -73,4 +73,20 @@
       opacity: 0;
     }
   }
+
+  /* Utilidades para Drag & Swipe y prevención de arrastre fantasma */
+  .cursor-grab {
+    cursor: grab;
+  }
+  .cursor-grabbing {
+    cursor: grabbing;
+  }
+  .no-drag {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
 }
+

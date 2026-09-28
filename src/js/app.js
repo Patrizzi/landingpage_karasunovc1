@@ -173,16 +173,17 @@ const VENUES_DATA = {
 };
 
 // ----------------------------------------------------------------------------
-// 0. HERO CAROUSEL / SLIDER (CATEGORÍAS DEPORTIVAS)
+// 0. HERO CAROUSEL / SLIDER HORIZONTAL (DESLIZANTE CON DRAG & SWIPE)
 // ----------------------------------------------------------------------------
 function initHeroCarousel() {
   const heroSection = document.getElementById('hero');
+  const track = document.getElementById('hero-track');
   const slides = document.querySelectorAll('.hero-slide');
   const dots = document.querySelectorAll('.hero-dot');
   const prevBtn = document.getElementById('hero-prev');
   const nextBtn = document.getElementById('hero-next');
 
-  if (!slides || slides.length === 0 || !heroSection) return;
+  if (!track || !slides || slides.length === 0 || !heroSection) return;
 
   let currentSlide = 0;
   let autoplayTimer = null;
@@ -198,29 +199,16 @@ function initHeroCarousel() {
     }
   });
 
-  // Función para cambiar de slide
+  // Función para mover el carrusel mediante translateX
   function goToSlide(index) {
     currentSlide = (index + slides.length) % slides.length;
 
-    // Actualizar visibilidad de slides con transición CSS inline infalible
-    slides.forEach((slide, idx) => {
-      slide.style.transition = 'opacity 0.8s ease-in-out';
-      if (idx === currentSlide) {
-        slide.style.opacity = '1';
-        slide.style.zIndex = '5';
-        slide.style.pointerEvents = 'auto';
-        slide.classList.remove('opacity-0', 'pointer-events-none');
-        slide.classList.add('opacity-100');
-      } else {
-        slide.style.opacity = '0';
-        slide.style.zIndex = '1';
-        slide.style.pointerEvents = 'none';
-        slide.classList.remove('opacity-100');
-        slide.classList.add('opacity-0', 'pointer-events-none');
-      }
-    });
+    // Transición suave de deslizamiento horizontal
+    track.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+    const percent = -(currentSlide * (100 / slides.length));
+    track.style.transform = `translateX(${percent}%)`;
 
-    // Actualizar estilo visual de los dots
+    // Actualizar estilo visual de los dots indicadores
     dots.forEach((dot, idx) => {
       if (idx === currentSlide) {
         dot.className = 'hero-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer';
@@ -285,90 +273,107 @@ function initHeroCarousel() {
   });
 
   // --------------------------------------------------------------------------
-  // ARRASTRE CON EL MOUSE (MOUSE DRAG / SWIPE)
+  // INTERACCIÓN DRAG & SWIPE EN TIEMPO REAL (ESCRITORIO Y PANTALLAS TÁCTILES)
   // --------------------------------------------------------------------------
   let isMouseDown = false;
   let isDragging = false;
-  let mouseStartX = 0;
-  let mouseCurrentX = 0;
+  let startX = 0;
+  let currentX = 0;
 
-  heroSection.classList.add('cursor-grab');
+  function getPositionX(e) {
+    return e.type.includes('mouse')
+      ? e.clientX
+      : (e.touches && e.touches[0] ? e.touches[0].clientX : (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : 0));
+  }
 
-  heroSection.addEventListener('mousedown', (e) => {
-    // Solo botón principal izquierdo (botón 0)
-    if (e.button !== 0) return;
-    // Ignorar si el clic fue en botones, enlaces o elementos interactivos
-    if (e.target.closest('button, a, input, [role="button"], #hero-dots, #hero-prev, #hero-next')) {
+  function dragStart(e) {
+    // Si es ratón, solo botón primario (izquierdo)
+    if (e.type === 'mousedown' && e.button !== 0) return;
+
+    // No iniciar drag si el usuario hace clic en botones, enlaces o controles
+    if (e.target.closest('button, a, input, select, textarea, [role="button"], #hero-dots, #hero-prev, #hero-next')) {
       return;
     }
 
     isMouseDown = true;
     isDragging = false;
-    mouseStartX = e.clientX;
-    mouseCurrentX = e.clientX;
-    heroSection.classList.remove('cursor-grab');
-    heroSection.classList.add('cursor-grabbing');
-  });
+    startX = getPositionX(e);
+    currentX = startX;
+    stopAutoplay();
+  }
 
-  window.addEventListener('mousemove', (e) => {
+  function dragMove(e) {
     if (!isMouseDown) return;
-    mouseCurrentX = e.clientX;
-    const diff = mouseCurrentX - mouseStartX;
-    if (Math.abs(diff) > 8) {
-      isDragging = true;
-    }
-  });
+    currentX = getPositionX(e);
+    const diffX = currentX - startX;
 
-  window.addEventListener('mouseup', () => {
+    // Umbral de 6px para confirmar la intención de arrastrar
+    if (!isDragging && Math.abs(diffX) > 6) {
+      isDragging = true;
+      track.style.transition = 'none'; // Seguimiento en tiempo real sin lag
+      heroSection.classList.remove('cursor-grab');
+      heroSection.classList.add('cursor-grabbing');
+    }
+
+    if (isDragging) {
+      const heroWidth = heroSection.offsetWidth;
+      const baseOffset = -(currentSlide * heroWidth);
+      let moveOffset = diffX;
+
+      // Resistencia elástica al arrastrar en los extremos
+      if ((currentSlide === 0 && diffX > 0) || (currentSlide === slides.length - 1 && diffX < 0)) {
+        moveOffset = diffX * 0.3;
+      }
+
+      const currentTranslate = baseOffset + moveOffset;
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    }
+  }
+
+  function dragEnd() {
     if (!isMouseDown) return;
     isMouseDown = false;
+
     heroSection.classList.remove('cursor-grabbing');
     heroSection.classList.add('cursor-grab');
 
     if (isDragging) {
-      const diff = mouseCurrentX - mouseStartX;
-      const DRAG_THRESHOLD = 40; // Mínimo 40px para activar el cambio
-      if (Math.abs(diff) > DRAG_THRESHOLD) {
-        if (diff < 0) {
-          goToSlide(currentSlide + 1); // Arrastre izquierda -> siguiente
-        } else {
-          goToSlide(currentSlide - 1); // Arrastre derecha -> anterior
-        }
-        resetAutoplay();
+      const diffX = currentX - startX;
+      // Umbral: cambiar de slide si se arrastra más del 15% del ancho de la pantalla
+      const threshold = heroSection.offsetWidth * 0.15;
+
+      if (diffX < -threshold) {
+        // Arrastre a la izquierda > 15% -> Siguiente slide
+        goToSlide(currentSlide + 1);
+      } else if (diffX > threshold) {
+        // Arrastre a la derecha > 15% -> Slide anterior
+        goToSlide(currentSlide - 1);
+      } else {
+        // No superó el porcentaje -> Regresa elásticamente a su posición original
+        goToSlide(currentSlide);
       }
     }
+
     isDragging = false;
+    resetAutoplay();
+  }
+
+  // Eventos para Escritorio (Mouse)
+  heroSection.addEventListener('mousedown', dragStart);
+  window.addEventListener('mousemove', dragMove);
+  window.addEventListener('mouseup', dragEnd);
+  heroSection.addEventListener('mouseleave', () => {
+    if (isMouseDown) dragEnd();
   });
 
-  // --------------------------------------------------------------------------
-  // GESTOS TÁCTILES (TOUCH SWIPE)
-  // --------------------------------------------------------------------------
-  let touchStartX = 0;
-  let touchCurrentX = 0;
+  // Eventos para Dispositivos Móviles / Táctiles (Touch)
+  heroSection.addEventListener('touchstart', dragStart, { passive: true });
+  heroSection.addEventListener('touchmove', dragMove, { passive: true });
+  heroSection.addEventListener('touchend', dragEnd);
 
-  heroSection.addEventListener('touchstart', (e) => {
-    if (e.touches && e.touches.length === 1) {
-      touchStartX = e.touches[0].clientX;
-      touchCurrentX = touchStartX;
-    }
-  }, { passive: true });
-
-  heroSection.addEventListener('touchmove', (e) => {
-    if (e.touches && e.touches.length === 1) {
-      touchCurrentX = e.touches[0].clientX;
-    }
-  }, { passive: true });
-
-  heroSection.addEventListener('touchend', () => {
-    const diff = touchCurrentX - touchStartX;
-    if (Math.abs(diff) > 40) {
-      if (diff < 0) {
-        goToSlide(currentSlide + 1); // Swipe izquierda -> siguiente
-      } else {
-        goToSlide(currentSlide - 1); // Swipe derecha -> anterior
-      }
-      resetAutoplay();
-    }
+  // Reajustar en cambio de tamaño de ventana para mantener precisión
+  window.addEventListener('resize', () => {
+    if (!isDragging) goToSlide(currentSlide);
   });
 
   // Estado inicial
@@ -568,9 +573,70 @@ function initScrollEffects() {
 }
 
 // ----------------------------------------------------------------------------
+// SEGURIDAD FRONTEND & DISUASIÓN DE INSPECCIÓN (ANTI-INSPECTION GUARDS)
+// ----------------------------------------------------------------------------
+function initSecurityGuards() {
+  // 1. Deshabilitar menú contextual (clic derecho)
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  }, { passive: false });
+
+  // 2. Bloquear atajos de teclado de herramientas de desarrollo e inspección
+  document.addEventListener('keydown', function (e) {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
+
+    // F12 (DevTools)
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+      return false;
+    }
+
+    // Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Select Element)
+    if (ctrlKey && e.shiftKey && (
+      e.key === 'I' || e.key === 'i' ||
+      e.key === 'J' || e.key === 'j' ||
+      e.key === 'C' || e.key === 'c' ||
+      e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67
+    )) {
+      e.preventDefault();
+      return false;
+    }
+
+    // Ctrl+U / Cmd+Option+U (Ver código fuente)
+    if (ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+      e.preventDefault();
+      return false;
+    }
+
+    // Ctrl+S / Cmd+S (Guardar página)
+    if (ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
+      e.preventDefault();
+      return false;
+    }
+  }, { passive: false });
+
+  // 3. Prevenir arrastre de imágenes para descarga rápida
+  document.addEventListener('dragstart', function (e) {
+    if (e.target && e.target.nodeName === 'IMG') {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // 4. Advertencia disuasoria en la consola del navegador
+  try {
+    const titleStyle = 'color: #ff5500; font-size: 24px; font-weight: bold; font-family: sans-serif;';
+    const textStyle = 'color: #ffffff; font-size: 13px; font-family: sans-serif; line-height: 1.5;';
+    console.log('%c¡ALTO AHÍ! 🏐', titleStyle);
+    console.log('%cEsta función del navegador está orientada a desarrolladores. El código fuente y los activos de Karasuno Voley Club están protegidos.', textStyle);
+  } catch (_) {}
+}
+
+// ----------------------------------------------------------------------------
 // INICIALIZACIÓN ROBUSTA (COMPATIBLE CON CUALQUIER NAVEGADOR Y PROTOCOLO)
 // ----------------------------------------------------------------------------
 function initApp() {
+  initSecurityGuards();
   initHeroCarousel();
   initVenueTabs();
   initMobileMenu();
