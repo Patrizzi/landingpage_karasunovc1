@@ -19,12 +19,22 @@ async function buildProduction() {
     fs.mkdirSync(distJsDir, { recursive: true });
   }
 
-  // 2. Compilar Tailwind CSS
+  // 2. Compilar Tailwind CSS (con fallback seguro)
   console.log('📦 1/5 Compilando Tailwind CSS minificado...');
-  execSync('npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify', {
-    cwd: ROOT_DIR,
-    stdio: 'inherit'
-  });
+  const tailwindBin = path.join(ROOT_DIR, 'node_modules', '.bin', process.platform === 'win32' ? 'tailwindcss.cmd' : 'tailwindcss');
+  const tailwindCmd = fs.existsSync(tailwindBin)
+    ? `"${tailwindBin}" -i ./src/input.css -o ./dist/output.css --minify`
+    : `npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify`;
+
+  try {
+    execSync(tailwindCmd, { cwd: ROOT_DIR, stdio: 'inherit' });
+  } catch (twErr) {
+    if (fs.existsSync(path.join(DIST_DIR, 'output.css'))) {
+      console.warn('   ⚠️ Advertencia Tailwind CLI: usando dist/output.css precompilado.');
+    } else {
+      throw twErr;
+    }
+  }
 
   // 3. Ofuscar JavaScript (src/js/app.js)
   console.log('\n🔒 2/5 Aplicando ofuscación severa en JavaScript (control flow flattening, string encoding, self-defending)...');
@@ -36,12 +46,12 @@ async function buildProduction() {
     controlFlowFlatteningThreshold: 0.75,
     deadCodeInjection: true,
     deadCodeInjectionThreshold: 0.4,
-    debugProtection: false, // Evita loop en navegadores legítimos
-    disableConsoleOutput: false, // Permitir mensaje de seguridad en consola
+    debugProtection: false,
+    disableConsoleOutput: false,
     identifierNamesGenerator: 'hexadecimal',
     numbersToExpressions: true,
     renameGlobals: false,
-    selfDefending: true, // Auto-defensa si intentan formatear el código
+    selfDefending: true,
     simplify: true,
     splitStrings: true,
     splitStringsChunkLength: 8,
@@ -60,7 +70,7 @@ async function buildProduction() {
   console.log(`   ✓ Archivo ofuscado creado: dist/js/app.min.js (${(Buffer.byteLength(obfuscatedJs) / 1024).toFixed(1)} KB)`);
 
   // 4. Copiar assets y configuraciones de seguridad
-  console.log('\n🛡️ 3/5 Copiando assets y cabeceras de seguridad...');
+  console.log('\n🛡️ 3/5 Sincronizando assets y cabeceras de seguridad...');
   const assetsSrc = path.join(ROOT_DIR, 'assets');
   const assetsDist = path.join(DIST_DIR, 'assets');
   if (fs.existsSync(assetsSrc)) {
@@ -69,10 +79,9 @@ async function buildProduction() {
     for (const file of files) {
       fs.copyFileSync(path.join(assetsSrc, file), path.join(assetsDist, file));
     }
-    console.log('   ✓ Directorio assets/ copiado a dist/assets/');
+    console.log('   ✓ Directorio assets/ sincronizado');
   }
 
-  // Copiar archivos de seguridad (.htaccess, _headers, vercel.json)
   const secFiles = ['.htaccess', '_headers', 'vercel.json'];
   for (const f of secFiles) {
     const srcPath = path.join(ROOT_DIR, f);
@@ -84,15 +93,10 @@ async function buildProduction() {
 
   // 5. Minificar HTML y vincular JS ofuscado
   console.log('\n📄 4/5 Minificando HTML y eliminando comentarios y espacios en blanco...');
-  let rawHtml = fs.readFileSync(path.join(ROOT_DIR, 'code.html'), 'utf8');
+  const rawHtml = fs.readFileSync(path.join(ROOT_DIR, 'code.html'), 'utf8');
+  const scriptRegex = /<!-- JavaScript Application Script[\s\S]*?<script>[\s\S]*?<\/script>/i;
 
-  // En la versión de producción en dist/, reemplazar el script embebido largo por el script ofuscado independiente
-  const scriptRegex = /<!-- JavaScript Application Script.*?<script>[\s\S]*?<\/script>/i;
-  if (scriptRegex.test(rawHtml)) {
-    rawHtml = rawHtml.replace(scriptRegex, '<script src="./js/app.min.js"></script>');
-  }
-
-  const minifiedHtml = await minify(rawHtml, {
+  const minifyOptions = {
     collapseWhitespace: true,
     removeComments: true,
     removeRedundantAttributes: true,
@@ -101,16 +105,31 @@ async function buildProduction() {
     useShortDoctype: true,
     minifyCSS: true,
     minifyJS: true
-  });
+  };
 
-  fs.writeFileSync(path.join(DIST_DIR, 'index.html'), minifiedHtml, 'utf8');
-  fs.writeFileSync(path.join(DIST_DIR, 'code.html'), minifiedHtml, 'utf8');
-  console.log(`   ✓ HTML minificado en: dist/index.html y dist/code.html (${(Buffer.byteLength(minifiedHtml) / 1024).toFixed(1)} KB)`);
+  // 5A. Versión para el ROOT (index.html raíz servido por Vercel / GitHub)
+  let rootHtml = rawHtml;
+  if (scriptRegex.test(rootHtml)) {
+    rootHtml = rootHtml.replace(scriptRegex, '<script src="./dist/js/app.min.js"></script>');
+  }
+  const minifiedRootHtml = await minify(rootHtml, minifyOptions);
+  fs.writeFileSync(path.join(ROOT_DIR, 'index.html'), minifiedRootHtml, 'utf8');
+  console.log(`   ✓ HTML minificado de producción: index.html raíz (${(Buffer.byteLength(minifiedRootHtml) / 1024).toFixed(1)} KB)`);
 
-  console.log('\n✅ 5/5 ¡Compilación de producción completada con éxito en la carpeta /dist!');
-  console.log('   - Código HTML 100% minificado y sin comentarios.');
-  console.log('   - JavaScript ofuscado y protegido con self-defending.');
-  console.log('   - Cabeceras de seguridad listas para desplegar.');
+  // 5B. Versión para dist/ (dist/index.html para despliegue aislado)
+  let distHtml = rawHtml.replace('./dist/output.css', './output.css');
+  if (scriptRegex.test(distHtml)) {
+    distHtml = distHtml.replace(scriptRegex, '<script src="./js/app.min.js"></script>');
+  }
+  const minifiedDistHtml = await minify(distHtml, minifyOptions);
+  fs.writeFileSync(path.join(DIST_DIR, 'index.html'), minifiedDistHtml, 'utf8');
+  fs.writeFileSync(path.join(DIST_DIR, 'code.html'), minifiedDistHtml, 'utf8');
+  console.log(`   ✓ HTML minificado de producción: dist/index.html (${(Buffer.byteLength(minifiedDistHtml) / 1024).toFixed(1)} KB)`);
+
+  console.log('\n✅ 5/5 ¡Compilación de producción completada con éxito!');
+  console.log('   - index.html en la raíz 100% minificado y protegido para Vercel.');
+  console.log('   - JavaScript ofuscado y blindado contra inspección.');
+  console.log('   - Cabeceras de seguridad listas en vercel.json.');
 }
 
 buildProduction().catch(err => {
