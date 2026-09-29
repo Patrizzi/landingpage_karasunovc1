@@ -173,24 +173,43 @@ const VENUES_DATA = {
 };
 
 // ----------------------------------------------------------------------------
-// 0. HERO CAROUSEL / SLIDER HORIZONTAL (DESLIZANTE CON DRAG & SWIPE)
+// 0. HERO CAROUSEL / SLIDER HORIZONTAL (BUCLE INFINITO CON CLONES & DRAG)
 // ----------------------------------------------------------------------------
 function initHeroCarousel() {
   const heroSection = document.getElementById('hero');
   const track = document.getElementById('hero-track');
-  const slides = document.querySelectorAll('.hero-slide');
   const dots = document.querySelectorAll('.hero-dot');
   const prevBtn = document.getElementById('hero-prev');
   const nextBtn = document.getElementById('hero-next');
 
-  if (!track || !slides || slides.length === 0 || !heroSection) return;
+  if (!track || !heroSection) return;
 
-  let currentSlide = 0;
-  let autoplayTimer = null;
-  const AUTOPLAY_DELAY = 5000; // 5 segundos
+  const originalSlides = Array.from(track.querySelectorAll('.hero-slide:not(.hero-slide-clone)'));
+  const originalCount = originalSlides.length;
+  if (originalCount === 0) return;
 
-  // Pre-cargar imágenes para transiciones inmediatas sin parpadeo
-  slides.forEach(slide => {
+  // Limpiar posibles clones previos (en caso de reinicialización)
+  track.querySelectorAll('.hero-slide-clone').forEach(el => el.remove());
+
+  // Clonar último slide al principio y primer slide al final
+  const cloneLast = originalSlides[originalCount - 1].cloneNode(true);
+  cloneLast.classList.add('hero-slide-clone');
+  cloneLast.setAttribute('aria-hidden', 'true');
+
+  const cloneFirst = originalSlides[0].cloneNode(true);
+  cloneFirst.classList.add('hero-slide-clone');
+  cloneFirst.setAttribute('aria-hidden', 'true');
+
+  track.insertBefore(cloneLast, originalSlides[0]);
+  track.appendChild(cloneFirst);
+
+  const allSlides = track.querySelectorAll('.hero-slide');
+  const totalSlidesCount = allSlides.length; // originalCount + 2
+
+  // Dimensionamiento dinámico del track y de cada slide para bucle perfecto
+  track.style.width = `${totalSlidesCount * 100}%`;
+  allSlides.forEach(slide => {
+    slide.style.width = `${100 / totalSlidesCount}%`;
     const img = slide.querySelector('img');
     if (img && img.src) {
       const preload = new Image();
@@ -199,18 +218,24 @@ function initHeroCarousel() {
     }
   });
 
-  // Función para mover el carrusel mediante translateX
-  function goToSlide(index) {
-    currentSlide = (index + slides.length) % slides.length;
+  // Índice actual en el track (1 = Primer slide real)
+  let currentIndex = 1;
+  let isTransitioning = false;
+  let transitionFallbackTimer = null;
+  let autoplayTimer = null;
+  const AUTOPLAY_DELAY = 5000; // 5 segundos
+  const TRANSITION_DURATION = 500; // 500ms
 
-    // Transición suave de deslizamiento horizontal
-    track.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-    const percent = -(currentSlide * (100 / slides.length));
-    track.style.transform = `translateX(${percent}%)`;
+  // Mapear el índice del track al índice lógico (0, 1, 2) de los dots
+  function getLogicalIndex(idx) {
+    if (idx === 0) return originalCount - 1; // clon del último
+    if (idx === totalSlidesCount - 1) return 0; // clon del primero
+    return idx - 1;
+  }
 
-    // Actualizar estilo visual de los dots indicadores
+  function updateDots(logicalIdx) {
     dots.forEach((dot, idx) => {
-      if (idx === currentSlide) {
+      if (idx === logicalIdx) {
         dot.className = 'hero-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer';
       } else {
         dot.className = 'hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer';
@@ -218,11 +243,68 @@ function initHeroCarousel() {
     });
   }
 
-  // Autoplay continuo cada 5 segundos
+  function setTrackPosition(index) {
+    const percent = -(index * (100 / totalSlidesCount));
+    track.style.transform = `translateX(${percent}%)`;
+  }
+
+  // Mover a un slide con o sin animación
+  function goToSlide(targetIndex, animate = true) {
+    currentIndex = targetIndex;
+    updateDots(getLogicalIndex(currentIndex));
+
+    if (animate) {
+      isTransitioning = true;
+      track.style.transition = `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+
+      // Fallback por si el evento transitionend es interrumpido
+      clearTimeout(transitionFallbackTimer);
+      transitionFallbackTimer = setTimeout(() => {
+        if (isTransitioning) {
+          handleTransitionEnd();
+        }
+      }, TRANSITION_DURATION + 50);
+    } else {
+      track.style.transition = 'none';
+      isTransitioning = false;
+    }
+
+    setTrackPosition(currentIndex);
+  }
+
+  // Reinicio silencioso al llegar a los extremos clonados
+  function handleTransitionEnd() {
+    clearTimeout(transitionFallbackTimer);
+    if (!isTransitioning) return;
+    isTransitioning = false;
+
+    if (currentIndex === 0) {
+      // Llegó al clon del último -> Salto silencioso al último slide real
+      track.style.transition = 'none';
+      currentIndex = originalCount;
+      setTrackPosition(currentIndex);
+      void track.offsetWidth; // Forzar reflow para aplicar el salto de inmediato
+    } else if (currentIndex === totalSlidesCount - 1) {
+      // Llegó al clon del primero -> Salto silencioso al primer slide real
+      track.style.transition = 'none';
+      currentIndex = 1;
+      setTrackPosition(currentIndex);
+      void track.offsetWidth; // Forzar reflow para aplicar el salto de inmediato
+    }
+  }
+
+  track.addEventListener('transitionend', (e) => {
+    if (e.target !== track || e.propertyName !== 'transform') return;
+    handleTransitionEnd();
+  });
+
+  // Autoplay continuo de 5 segundos
   function startAutoplay() {
     stopAutoplay();
     autoplayTimer = setInterval(() => {
-      goToSlide(currentSlide + 1);
+      if (!isTransitioning && !isDragging && !isMouseDown) {
+        goToSlide(currentIndex + 1, true);
+      }
     }, AUTOPLAY_DELAY);
   }
 
@@ -233,7 +315,6 @@ function initHeroCarousel() {
     }
   }
 
-  // Reinicia el temporizador de 5 segundos tras interacción manual
   function resetAutoplay() {
     stopAutoplay();
     startAutoplay();
@@ -244,7 +325,8 @@ function initHeroCarousel() {
     prevBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      goToSlide(currentSlide - 1);
+      if (isTransitioning) return;
+      goToSlide(currentIndex - 1, true);
       resetAutoplay();
     });
   }
@@ -254,7 +336,8 @@ function initHeroCarousel() {
     nextBtn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      goToSlide(currentSlide + 1);
+      if (isTransitioning) return;
+      goToSlide(currentIndex + 1, true);
       resetAutoplay();
     });
   }
@@ -264,9 +347,10 @@ function initHeroCarousel() {
     dot.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (isTransitioning) return;
       const idx = parseInt(dot.getAttribute('data-index'), 10);
       if (!isNaN(idx)) {
-        goToSlide(idx);
+        goToSlide(idx + 1, true);
         resetAutoplay();
       }
     });
@@ -287,12 +371,14 @@ function initHeroCarousel() {
   }
 
   function dragStart(e) {
-    // Si es ratón, solo botón primario (izquierdo)
     if (e.type === 'mousedown' && e.button !== 0) return;
-
-    // No iniciar drag si el usuario hace clic en botones, enlaces o controles
     if (e.target.closest('button, a, input, select, textarea, [role="button"], #hero-dots, #hero-prev, #hero-next')) {
       return;
+    }
+
+    // Si estaba en medio de una transición, completamos el salto antes de arrastrar
+    if (isTransitioning) {
+      handleTransitionEnd();
     }
 
     isMouseDown = true;
@@ -307,25 +393,17 @@ function initHeroCarousel() {
     currentX = getPositionX(e);
     const diffX = currentX - startX;
 
-    // Umbral de 6px para confirmar la intención de arrastrar
     if (!isDragging && Math.abs(diffX) > 6) {
       isDragging = true;
-      track.style.transition = 'none'; // Seguimiento en tiempo real sin lag
+      track.style.transition = 'none';
       heroSection.classList.remove('cursor-grab');
       heroSection.classList.add('cursor-grabbing');
     }
 
     if (isDragging) {
       const heroWidth = heroSection.offsetWidth;
-      const baseOffset = -(currentSlide * heroWidth);
-      let moveOffset = diffX;
-
-      // Resistencia elástica al arrastrar en los extremos
-      if ((currentSlide === 0 && diffX > 0) || (currentSlide === slides.length - 1 && diffX < 0)) {
-        moveOffset = diffX * 0.3;
-      }
-
-      const currentTranslate = baseOffset + moveOffset;
+      const baseOffset = -(currentIndex * heroWidth);
+      const currentTranslate = baseOffset + diffX;
       track.style.transform = `translateX(${currentTranslate}px)`;
     }
   }
@@ -339,18 +417,14 @@ function initHeroCarousel() {
 
     if (isDragging) {
       const diffX = currentX - startX;
-      // Umbral: cambiar de slide si se arrastra más del 15% del ancho de la pantalla
-      const threshold = heroSection.offsetWidth * 0.15;
+      const threshold = heroSection.offsetWidth * 0.15; // 15% del ancho
 
       if (diffX < -threshold) {
-        // Arrastre a la izquierda > 15% -> Siguiente slide
-        goToSlide(currentSlide + 1);
+        goToSlide(currentIndex + 1, true);
       } else if (diffX > threshold) {
-        // Arrastre a la derecha > 15% -> Slide anterior
-        goToSlide(currentSlide - 1);
+        goToSlide(currentIndex - 1, true);
       } else {
-        // No superó el porcentaje -> Regresa elásticamente a su posición original
-        goToSlide(currentSlide);
+        goToSlide(currentIndex, true);
       }
     }
 
@@ -358,7 +432,7 @@ function initHeroCarousel() {
     resetAutoplay();
   }
 
-  // Eventos para Escritorio (Mouse)
+  // Eventos Mouse y Touch
   heroSection.addEventListener('mousedown', dragStart);
   window.addEventListener('mousemove', dragMove);
   window.addEventListener('mouseup', dragEnd);
@@ -366,20 +440,21 @@ function initHeroCarousel() {
     if (isMouseDown) dragEnd();
   });
 
-  // Eventos para Dispositivos Móviles / Táctiles (Touch)
   heroSection.addEventListener('touchstart', dragStart, { passive: true });
   heroSection.addEventListener('touchmove', dragMove, { passive: true });
   heroSection.addEventListener('touchend', dragEnd);
 
-  // Reajustar en cambio de tamaño de ventana para mantener precisión
+  // Redimensionamiento de ventana
   window.addEventListener('resize', () => {
-    if (!isDragging) goToSlide(currentSlide);
+    if (!isDragging) {
+      goToSlide(currentIndex, false);
+    }
   });
 
-  // Estado inicial
-  goToSlide(0);
+  // Inicializar en el primer slide real (índice 1) sin animación
+  goToSlide(1, false);
 
-  // Iniciar carrusel automático de 5 segundos
+  // Iniciar autoplay de 5 segundos
   startAutoplay();
 }
 
@@ -532,24 +607,44 @@ function initFaqAccordion() {
 // ----------------------------------------------------------------------------
 function initScrollEffects() {
   const header = document.querySelector('header');
+  const stripe = document.getElementById('header-stripe');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('nav a[data-path]');
 
-  window.addEventListener('scroll', () => {
+  function updateHeaderOnScroll() {
     const scrollY = window.scrollY;
+    if (!header) return;
 
-    // Header styling on scroll
-    if (header) {
-      if (scrollY > 50) {
-        header.classList.add('bg-surface-container-lowest/95', 'shadow-lg');
-        header.classList.remove('bg-surface-container-lowest/90');
-      } else {
-        header.classList.remove('bg-surface-container-lowest/95', 'shadow-lg');
-        header.classList.add('bg-surface-container-lowest/90');
+    if (scrollY > 50) {
+      header.classList.add(
+        'bg-surface-container-lowest/95',
+        'backdrop-blur-md',
+        'shadow-lg'
+      );
+      header.classList.remove('bg-transparent');
+      if (stripe) {
+        stripe.classList.remove('opacity-0');
+        stripe.classList.add('opacity-100');
+      }
+    } else {
+      header.classList.remove(
+        'bg-surface-container-lowest/95',
+        'backdrop-blur-md',
+        'shadow-lg'
+      );
+      header.classList.add('bg-transparent');
+      if (stripe) {
+        stripe.classList.remove('opacity-100');
+        stripe.classList.add('opacity-0');
       }
     }
+  }
+
+  window.addEventListener('scroll', () => {
+    updateHeaderOnScroll();
 
     // Scrollspy active state
+    const scrollY = window.scrollY;
     let currentId = '';
     sections.forEach(section => {
       const sectionTop = section.offsetTop - 120;
@@ -569,74 +664,16 @@ function initScrollEffects() {
         }
       });
     }
-  });
-}
+  }, { passive: true });
 
-// ----------------------------------------------------------------------------
-// SEGURIDAD FRONTEND & DISUASIÓN DE INSPECCIÓN (ANTI-INSPECTION GUARDS)
-// ----------------------------------------------------------------------------
-function initSecurityGuards() {
-  // 1. Deshabilitar menú contextual (clic derecho)
-  document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-  }, { passive: false });
-
-  // 2. Bloquear atajos de teclado de herramientas de desarrollo e inspección
-  document.addEventListener('keydown', function (e) {
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
-
-    // F12 (DevTools)
-    if (e.key === 'F12' || e.keyCode === 123) {
-      e.preventDefault();
-      return false;
-    }
-
-    // Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Select Element)
-    if (ctrlKey && e.shiftKey && (
-      e.key === 'I' || e.key === 'i' ||
-      e.key === 'J' || e.key === 'j' ||
-      e.key === 'C' || e.key === 'c' ||
-      e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67
-    )) {
-      e.preventDefault();
-      return false;
-    }
-
-    // Ctrl+U / Cmd+Option+U (Ver código fuente)
-    if (ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
-      e.preventDefault();
-      return false;
-    }
-
-    // Ctrl+S / Cmd+S (Guardar página)
-    if (ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
-      e.preventDefault();
-      return false;
-    }
-  }, { passive: false });
-
-  // 3. Prevenir arrastre de imágenes para descarga rápida
-  document.addEventListener('dragstart', function (e) {
-    if (e.target && e.target.nodeName === 'IMG') {
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  // 4. Advertencia disuasoria en la consola del navegador
-  try {
-    const titleStyle = 'color: #ff5500; font-size: 24px; font-weight: bold; font-family: sans-serif;';
-    const textStyle = 'color: #ffffff; font-size: 13px; font-family: sans-serif; line-height: 1.5;';
-    console.log('%c¡ALTO AHÍ! 🏐', titleStyle);
-    console.log('%cEsta función del navegador está orientada a desarrolladores. El código fuente y los activos de Karasuno Voley Club están protegidos.', textStyle);
-  } catch (_) {}
+  // Verificación inicial al cargar la página
+  updateHeaderOnScroll();
 }
 
 // ----------------------------------------------------------------------------
 // INICIALIZACIÓN ROBUSTA (COMPATIBLE CON CUALQUIER NAVEGADOR Y PROTOCOLO)
 // ----------------------------------------------------------------------------
 function initApp() {
-  initSecurityGuards();
   initHeroCarousel();
   initVenueTabs();
   initMobileMenu();
@@ -649,3 +686,4 @@ if (document.readyState === 'loading') {
 } else {
   initApp();
 }
+

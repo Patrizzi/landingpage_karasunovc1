@@ -22,43 +22,43 @@
   <!-- ========================================================================
        HEADER / NAVBAR
        ======================================================================== -->
-  <header class="fixed top-0 left-0 right-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-md border-b border-white/10 transition-all duration-200">
+  <header id="main-header" class="fixed top-0 left-0 right-0 w-full z-50 bg-transparent transition-colors duration-300 ease-in-out">
     <div class="h-20 max-w-[1280px] mx-auto px-6 lg:px-margin flex items-center justify-between">
       
       <!-- Logo Oficial -->
       <a class="flex items-center gap-3.5 group cursor-pointer" href="#hero">
-        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-white/15 group-hover:border-primary-container transition-colors bg-black flex items-center justify-center">
+        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 group-hover:border-primary-container transition-colors bg-black flex items-center justify-center shadow-sm">
           <img alt="Karasuno Voley Club Logo" class="w-full h-full object-cover" src="./assets/logo.jpg"/>
         </div>
-        <div class="flex flex-col">
-          <span class="font-cormorant font-['Cormorant_Garamond',serif] text-xl uppercase tracking-wider text-on-surface leading-tight font-bold group-hover:text-primary transition-colors">KARASUNO</span>
+        <div class="flex flex-col drop-shadow-md">
+          <span class="font-cormorant font-['Cormorant_Garamond',serif] text-xl uppercase tracking-wider text-white leading-tight font-bold group-hover:text-primary transition-colors">KARASUNO</span>
           <span class="font-label-caps uppercase text-primary tracking-widest text-[9px] leading-tight font-semibold">VOLEY CLUB</span>
         </div>
       </a>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center gap-8" aria-label="Navegación principal">
-        <a class="font-title-md text-sm text-primary transition-colors py-1" data-path="inicio" href="#hero">Inicio</a>
-        <a class="font-title-md text-sm text-on-surface-variant hover:text-on-surface transition-colors py-1" data-path="categorias" href="#categorias">Categorías</a>
-        <a class="font-title-md text-sm text-on-surface-variant hover:text-on-surface transition-colors py-1" data-path="sedes-y-horarios" href="#sedes-horarios">Sedes y Horarios</a>
-        <a class="font-title-md text-sm text-on-surface-variant hover:text-on-surface transition-colors py-1" data-path="faq" href="#faq">Preguntas</a>
-        <a class="font-title-md text-sm text-on-surface-variant hover:text-on-surface transition-colors py-1" data-path="contacto" href="#contacto">Contacto</a>
+      <nav class="hidden lg:flex items-center gap-8 drop-shadow-md" aria-label="Navegación principal">
+        <a class="font-title-md text-sm text-primary transition-colors py-1 font-semibold" data-path="inicio" href="#hero">Inicio</a>
+        <a class="font-title-md text-sm text-white/90 hover:text-white transition-colors py-1 font-medium hover:drop-shadow-lg" data-path="categorias" href="#categorias">Categorías</a>
+        <a class="font-title-md text-sm text-white/90 hover:text-white transition-colors py-1 font-medium hover:drop-shadow-lg" data-path="sedes-y-horarios" href="#sedes-horarios">Sedes y Horarios</a>
+        <a class="font-title-md text-sm text-white/90 hover:text-white transition-colors py-1 font-medium hover:drop-shadow-lg" data-path="faq" href="#faq">Preguntas</a>
+        <a class="font-title-md text-sm text-white/90 hover:text-white transition-colors py-1 font-medium hover:drop-shadow-lg" data-path="contacto" href="#contacto">Contacto</a>
       </nav>
 
       <!-- Direct WhatsApp Action & Mobile Toggle (No glow, Direct Link) -->
       <div class="flex items-center gap-4">
-        <a class="group hidden sm:inline-flex items-center justify-center gap-2 font-label-caps text-xs uppercase px-5 py-2 rounded-lg border border-primary-container text-white bg-primary-container/10 hover:bg-primary-container transition-all cursor-pointer font-bold tracking-wider" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20inscribirme" target="_blank" rel="noopener noreferrer">
+        <a class="group hidden sm:inline-flex items-center justify-center gap-2 font-label-caps text-xs uppercase px-5 py-2 rounded-lg border border-primary-container text-white bg-primary-container/20 hover:bg-primary-container transition-all cursor-pointer font-bold tracking-wider backdrop-blur-sm shadow-md" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20inscribirme" target="_blank" rel="noopener noreferrer">
           <span>Inscríbete</span>
           <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-0.5">arrow_forward</span>
         </a>
-        <button id="mobile-menu-btn" aria-label="Abrir menú móvil" class="lg:hidden text-on-surface hover:text-primary transition-colors p-2 cursor-pointer" type="button">
+        <button id="mobile-menu-btn" aria-label="Abrir menú móvil" class="lg:hidden text-white hover:text-primary transition-colors p-2 cursor-pointer drop-shadow-md" type="button">
           <span class="material-symbols-outlined text-2xl">menu</span>
         </button>
       </div>
     </div>
 
-    <!-- Barra de acento decorativa institucional (Naranja y Negro - Estilo Club Deportivo) -->
-    <div class="absolute bottom-0 left-0 right-0 w-full h-[3px] flex" aria-hidden="true">
+    <!-- Barra de acento decorativa institucional (Naranja y Negro - Aparece al hacer scroll) -->
+    <div id="header-stripe" class="absolute bottom-0 left-0 right-0 w-full h-[3px] flex opacity-0 transition-opacity duration-300 pointer-events-none" aria-hidden="true">
       <div class="w-1/2 bg-primary-container"></div>
       <div class="w-1/2 bg-surface-container-high"></div>
     </div>
@@ -96,18 +96,18 @@
     </div>
   </div>
 
-  <main class="w-full pt-20 bg-background">
+  <main class="w-full bg-background">
     
     <!-- ======================================================================
          HERO SECTION CON CARRUSEL DINÁMICO (MAYORES, JÓVENES, NIÑOS)
          ====================================================================== -->
-    <section id="hero" class="relative w-full min-h-[88vh] flex flex-col justify-between overflow-hidden pt-24 pb-16 bg-surface-container-lowest border-b border-white/5 group select-none cursor-grab">
+    <section id="hero" class="relative w-full min-h-screen lg:h-screen lg:max-h-[1080px] flex flex-col justify-between overflow-hidden pt-24 sm:pt-28 pb-5 sm:pb-6 bg-surface-container-lowest border-b border-white/5 group select-none cursor-grab">
       
-      <!-- Carrusel de Imágenes de Fondo (Slider Track Deslizante) -->
+      <!-- Carrusel de Imágenes de Fondo (Slider Track Deslizante con superposición completa hasta top-0) -->
       <div id="hero-slider" class="absolute inset-0 z-0 overflow-hidden select-none pointer-events-none">
         
-        <!-- Track horizontal de deslizamiento (Slide Track) -->
-        <div id="hero-track" class="flex w-[300%] h-full will-change-transform transition-transform duration-500 ease-out">
+        <!-- Track horizontal de deslizamiento (Slide Track con soporte infinito) -->
+        <div id="hero-track" class="flex h-full will-change-transform">
           
           <!-- Slide 1: Categoría Mayores -->
           <div class="hero-slide w-1/3 h-full relative flex-shrink-0">
@@ -125,6 +125,9 @@
           </div>
         </div>
 
+        <!-- Velo protector superior: garantiza 100% legibilidad del header flotante sobre cualquier fotografía -->
+        <div class="absolute top-0 left-0 right-0 h-36 sm:h-44 bg-gradient-to-b from-[#0e0e0e]/85 via-[#0e0e0e]/35 to-transparent z-10 pointer-events-none" aria-hidden="true"></div>
+
         <!-- Gradientes Optimizados: Mayor Protagonismo Visual a la Derecha y Contraste en el Bloque Izquierdo -->
         <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent z-10 pointer-events-none"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent z-10 pointer-events-none"></div>
@@ -140,51 +143,51 @@
         <span class="material-symbols-outlined text-2xl pointer-events-none select-none">chevron_right</span>
       </button>
 
-      <!-- Hero Content (Reestructurado a la Izquierda) -->
-      <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin pt-4 flex flex-col items-start">
+      <!-- Hero Content (Alineación a la Izquierda y Espaciado Compacto) -->
+      <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin flex flex-col items-start my-auto">
         
         <!-- Bloque Izquierdo Delimitado (deja libre el lado derecho) -->
         <div class="flex flex-col items-start max-w-xl lg:max-w-lg xl:max-w-xl w-full">
           
           <!-- Badge Oficial -->
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md mb-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md mb-2.5 sm:mb-3">
             <span class="w-2 h-2 rounded-full bg-primary-container pulse-dot"></span>
             <span class="font-label-caps text-[10px] tracking-widest text-on-surface-variant uppercase font-semibold">TODAS LAS CATEGORIAS • CONSULTAR SEDES</span>
           </div>
 
           <!-- Logo Oficial del Club -->
-          <div class="relative mb-5 group">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-surface-container-lowest/80 backdrop-blur-md border-2 border-primary-container/60 shadow-xl shadow-black/60 flex items-center justify-center transition-transform duration-300 hover:scale-105">
+          <div class="relative mb-2.5 sm:mb-3 group">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full p-1 bg-surface-container-lowest/80 backdrop-blur-md border-2 border-primary-container/60 shadow-xl shadow-black/60 flex items-center justify-center transition-transform duration-300 hover:scale-105">
               <img alt="Karasuno Voley Club Logo" class="w-full h-full object-cover rounded-full pointer-events-none select-none" src="./assets/logo.jpg" draggable="false"/>
             </div>
             <div class="absolute -inset-1 rounded-full bg-primary-container/20 blur-sm -z-10 opacity-70"></div>
           </div>
 
           <!-- Título Principal "KARASUNO VC" (Cormorant Garamond) -->
-          <h1 class="font-cormorant font-['Cormorant_Garamond',serif] text-6xl sm:text-7xl md:text-8xl lg:text-8xl xl:text-9xl font-bold text-primary-container uppercase tracking-tight mb-4 leading-none drop-shadow-md">
+          <h1 class="font-cormorant font-['Cormorant_Garamond',serif] text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-bold text-primary-container uppercase tracking-tight mb-2 leading-none drop-shadow-md">
             KARASUNO VC
           </h1>
 
           <!-- Párrafo Descriptivo Solicitado -->
-          <p class="font-body-lg text-lg sm:text-xl text-white/90 leading-relaxed mb-8 font-medium drop-shadow-sm">
+          <p class="font-body-lg text-base sm:text-lg text-white/90 leading-snug mb-4 font-medium drop-shadow-sm max-w-lg">
             Ven y sé parte de esta familia, te esperamos
           </p>
 
           <!-- Botones de Acción (Alineación Limpia a la Izquierda) -->
-          <div class="flex flex-wrap items-center gap-4 mb-8">
-            <a class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-lg bg-primary-container text-white font-label-caps text-xs uppercase tracking-wider hover:bg-tertiary-container transition-colors cursor-pointer font-bold shadow-md shadow-black/40" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20entrenar%20con%20ustedes" target="_blank" rel="noopener noreferrer">
+          <div class="flex flex-wrap items-center gap-3.5 mb-3.5 sm:mb-4">
+            <a class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-container text-white font-label-caps text-xs uppercase tracking-wider hover:bg-tertiary-container transition-colors cursor-pointer font-bold shadow-md shadow-black/40" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20entrenar%20con%20ustedes" target="_blank" rel="noopener noreferrer">
               <span>Entrena con nosotros</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </a>
             
-            <a class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/10 bg-surface-container-low/80 text-on-surface font-label-caps text-xs uppercase tracking-wider hover:bg-surface-container-high transition-colors backdrop-blur-sm" href="#sedes-horarios">
+            <a class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/10 bg-surface-container-low/80 text-on-surface font-label-caps text-xs uppercase tracking-wider hover:bg-surface-container-high transition-colors backdrop-blur-sm" href="#sedes-horarios">
               <span>Ver Horarios y Sedes</span>
               <span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
             </a>
           </div>
 
           <!-- Paginación de Puntos (Dots) del Carrusel -->
-          <div id="hero-dots" class="flex items-center gap-2.5 mb-6 z-20">
+          <div id="hero-dots" class="flex items-center gap-2.5 z-20">
             <button type="button" aria-label="Ir a categoría Mayores" class="hero-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer" data-index="0"></button>
             <button type="button" aria-label="Ir a categoría Jóvenes" class="hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer" data-index="1"></button>
             <button type="button" aria-label="Ir a categoría Niños" class="hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer" data-index="2"></button>
@@ -194,41 +197,41 @@
       </div>
 
       <!-- Minimalist Stats Bar: Filosofía del Club & Afiliación FPV -->
-      <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6 lg:p-7 rounded-xl border border-white/5 bg-surface-container-low/70 backdrop-blur-sm divide-y sm:divide-y-0 divide-white/5">
+      <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin mt-3 sm:mt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 p-4 sm:p-5 lg:p-5 rounded-xl border border-white/5 bg-surface-container-low/75 backdrop-blur-md divide-y sm:divide-y-0 divide-white/5 shadow-lg shadow-black/20">
           
           <!-- Bloque 1 -->
-          <div class="flex items-center gap-3.5">
-            <span class="w-1.5 h-8 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
-            <p class="font-headline-sm text-sm sm:text-base lg:text-[15px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
+          <div class="flex items-center gap-3">
+            <span class="w-1.5 h-7 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
+            <p class="font-headline-sm text-xs sm:text-sm lg:text-[14px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
               DISCIPLINA, ESFUERZO Y <span class="text-primary-container">TRABAJO EN EQUIPO</span>
             </p>
           </div>
 
           <!-- Bloque 2 -->
-          <div class="flex items-center gap-3.5 sm:border-l sm:border-white/10 sm:pl-6 pt-4 sm:pt-0">
-            <span class="w-1.5 h-8 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
-            <p class="font-headline-sm text-sm sm:text-base lg:text-[15px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
+          <div class="flex items-center gap-3 sm:border-l sm:border-white/10 sm:pl-4 lg:pl-6 pt-3 sm:pt-0">
+            <span class="w-1.5 h-7 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
+            <p class="font-headline-sm text-xs sm:text-sm lg:text-[14px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
               FORMAMOS JUGADORES, PERO SOBRETODO, <span class="text-primary-container">GRANDES PERSONAS</span>
             </p>
           </div>
 
           <!-- Bloque 3 -->
-          <div class="flex items-center gap-3.5 lg:border-l lg:border-white/10 lg:pl-6 pt-4 sm:pt-0">
-            <span class="w-1.5 h-8 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
-            <p class="font-headline-sm text-sm sm:text-base lg:text-[15px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
+          <div class="flex items-center gap-3 lg:border-l lg:border-white/10 lg:pl-6 pt-3 sm:pt-0">
+            <span class="w-1.5 h-7 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
+            <p class="font-headline-sm text-xs sm:text-sm lg:text-[14px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
               ÚNETE AL EQUIPO Y LLEVA TU PASIÓN <span class="text-primary-container">AL SIGUIENTE NIVEL</span>
             </p>
           </div>
 
           <!-- Bloque 4: Afiliados a la FPV -->
-          <div class="flex items-center gap-3.5 sm:border-l sm:border-white/10 sm:pl-6 lg:border-l lg:border-white/10 lg:pl-6 pt-4 sm:pt-0">
+          <div class="flex items-center gap-3 sm:border-l sm:border-white/10 sm:pl-4 lg:border-l lg:border-white/10 lg:pl-6 pt-3 sm:pt-0">
             <div class="flex flex-col justify-center">
               <div class="flex items-center gap-2">
-                <span class="font-headline-md text-2xl sm:text-3xl font-bold text-primary-container tracking-wider leading-none">FPV</span>
-                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold font-label-caps bg-primary-container/15 text-primary-container border border-primary-container/30 uppercase tracking-wider">OFICIAL</span>
+                <span class="font-headline-md text-2xl lg:text-3xl font-bold text-primary-container tracking-wider leading-none">FPV</span>
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold font-label-caps bg-primary-container/15 text-primary-container border border-primary-container/30 uppercase tracking-wider">OFICIAL</span>
               </div>
-              <span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold mt-1">Afiliados a la FPV</span>
+              <span class="font-label-caps text-[10px] lg:text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold mt-0.5">Afiliados a la FPV</span>
             </div>
           </div>
 
@@ -751,18 +754,38 @@
     function initHeroCarousel() {
       const heroSection = document.getElementById('hero');
       const track = document.getElementById('hero-track');
-      const slides = document.querySelectorAll('.hero-slide');
       const dots = document.querySelectorAll('.hero-dot');
       const prevBtn = document.getElementById('hero-prev');
       const nextBtn = document.getElementById('hero-next');
 
-      if (!track || !slides || slides.length === 0 || !heroSection) return;
+      if (!track || !heroSection) return;
 
-      let currentSlide = 0;
-      let autoplayTimer = null;
-      const AUTOPLAY_DELAY = 5000;
+      const originalSlides = Array.from(track.querySelectorAll('.hero-slide:not(.hero-slide-clone)'));
+      const originalCount = originalSlides.length;
+      if (originalCount === 0) return;
 
-      slides.forEach(slide => {
+      // Limpiar posibles clones previos (en caso de reinicialización)
+      track.querySelectorAll('.hero-slide-clone').forEach(el => el.remove());
+
+      // Clonar último slide al principio y primer slide al final
+      const cloneLast = originalSlides[originalCount - 1].cloneNode(true);
+      cloneLast.classList.add('hero-slide-clone');
+      cloneLast.setAttribute('aria-hidden', 'true');
+
+      const cloneFirst = originalSlides[0].cloneNode(true);
+      cloneFirst.classList.add('hero-slide-clone');
+      cloneFirst.setAttribute('aria-hidden', 'true');
+
+      track.insertBefore(cloneLast, originalSlides[0]);
+      track.appendChild(cloneFirst);
+
+      const allSlides = track.querySelectorAll('.hero-slide');
+      const totalSlidesCount = allSlides.length; // originalCount + 2
+
+      // Dimensionamiento dinámico del track y de cada slide para bucle perfecto
+      track.style.width = `${totalSlidesCount * 100}%`;
+      allSlides.forEach(slide => {
+        slide.style.width = `${100 / totalSlidesCount}%`;
         const img = slide.querySelector('img');
         if (img && img.src) {
           const preload = new Image();
@@ -771,15 +794,24 @@
         }
       });
 
-      function goToSlide(index) {
-        currentSlide = (index + slides.length) % slides.length;
+      // Índice actual en el track (1 = Primer slide real)
+      let currentIndex = 1;
+      let isTransitioning = false;
+      let transitionFallbackTimer = null;
+      let autoplayTimer = null;
+      const AUTOPLAY_DELAY = 5000; // 5 segundos
+      const TRANSITION_DURATION = 500; // 500ms
 
-        track.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-        const percent = -(currentSlide * (100 / slides.length));
-        track.style.transform = `translateX(${percent}%)`;
+      // Mapear el índice del track al índice lógico (0, 1, 2) de los dots
+      function getLogicalIndex(idx) {
+        if (idx === 0) return originalCount - 1; // clon del último
+        if (idx === totalSlidesCount - 1) return 0; // clon del primero
+        return idx - 1;
+      }
 
+      function updateDots(logicalIdx) {
         dots.forEach((dot, idx) => {
-          if (idx === currentSlide) {
+          if (idx === logicalIdx) {
             dot.className = 'hero-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer';
           } else {
             dot.className = 'hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer';
@@ -787,10 +819,68 @@
         });
       }
 
+      function setTrackPosition(index) {
+        const percent = -(index * (100 / totalSlidesCount));
+        track.style.transform = `translateX(${percent}%)`;
+      }
+
+      // Mover a un slide con o sin animación
+      function goToSlide(targetIndex, animate = true) {
+        currentIndex = targetIndex;
+        updateDots(getLogicalIndex(currentIndex));
+
+        if (animate) {
+          isTransitioning = true;
+          track.style.transition = `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+
+          // Fallback por si el evento transitionend es interrumpido
+          clearTimeout(transitionFallbackTimer);
+          transitionFallbackTimer = setTimeout(() => {
+            if (isTransitioning) {
+              handleTransitionEnd();
+            }
+          }, TRANSITION_DURATION + 50);
+        } else {
+          track.style.transition = 'none';
+          isTransitioning = false;
+        }
+
+        setTrackPosition(currentIndex);
+      }
+
+      // Reinicio silencioso al llegar a los extremos clonados
+      function handleTransitionEnd() {
+        clearTimeout(transitionFallbackTimer);
+        if (!isTransitioning) return;
+        isTransitioning = false;
+
+        if (currentIndex === 0) {
+          // Llegó al clon del último -> Salto silencioso al último slide real
+          track.style.transition = 'none';
+          currentIndex = originalCount;
+          setTrackPosition(currentIndex);
+          void track.offsetWidth; // Forzar reflow para aplicar el salto de inmediato
+        } else if (currentIndex === totalSlidesCount - 1) {
+          // Llegó al clon del primero -> Salto silencioso al primer slide real
+          track.style.transition = 'none';
+          currentIndex = 1;
+          setTrackPosition(currentIndex);
+          void track.offsetWidth; // Forzar reflow para aplicar el salto de inmediato
+        }
+      }
+
+      track.addEventListener('transitionend', (e) => {
+        if (e.target !== track || e.propertyName !== 'transform') return;
+        handleTransitionEnd();
+      });
+
+      // Autoplay continuo de 5 segundos
       function startAutoplay() {
         stopAutoplay();
         autoplayTimer = setInterval(() => {
-          goToSlide(currentSlide + 1);
+          if (!isTransitioning && !isDragging && !isMouseDown) {
+            goToSlide(currentIndex + 1, true);
+          }
         }, AUTOPLAY_DELAY);
       }
 
@@ -806,38 +896,44 @@
         startAutoplay();
       }
 
+      // Botón Anterior
       if (prevBtn) {
         prevBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          goToSlide(currentSlide - 1);
+          if (isTransitioning) return;
+          goToSlide(currentIndex - 1, true);
           resetAutoplay();
         });
       }
 
+      // Botón Siguiente
       if (nextBtn) {
         nextBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          goToSlide(currentSlide + 1);
+          if (isTransitioning) return;
+          goToSlide(currentIndex + 1, true);
           resetAutoplay();
         });
       }
 
+      // Puntos / Dots
       dots.forEach(dot => {
         dot.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
+          if (isTransitioning) return;
           const idx = parseInt(dot.getAttribute('data-index'), 10);
           if (!isNaN(idx)) {
-            goToSlide(idx);
+            goToSlide(idx + 1, true);
             resetAutoplay();
           }
         });
       });
 
       // ----------------------------------------------------------------------
-      // INTERACCIÓN DRAG & SWIPE EN TIEMPO REAL (ESCRITORIO Y TÁCTIL)
+      // INTERACCIÓN DRAG & SWIPE EN TIEMPO REAL (ESCRITORIO Y PANTALLAS TÁCTILES)
       // ----------------------------------------------------------------------
       let isMouseDown = false;
       let isDragging = false;
@@ -854,6 +950,11 @@
         if (e.type === 'mousedown' && e.button !== 0) return;
         if (e.target.closest('button, a, input, select, textarea, [role="button"], #hero-dots, #hero-prev, #hero-next')) {
           return;
+        }
+
+        // Si estaba en medio de una transición, completamos el salto antes de arrastrar
+        if (isTransitioning) {
+          handleTransitionEnd();
         }
 
         isMouseDown = true;
@@ -877,14 +978,8 @@
 
         if (isDragging) {
           const heroWidth = heroSection.offsetWidth;
-          const baseOffset = -(currentSlide * heroWidth);
-          let moveOffset = diffX;
-
-          if ((currentSlide === 0 && diffX > 0) || (currentSlide === slides.length - 1 && diffX < 0)) {
-            moveOffset = diffX * 0.3;
-          }
-
-          const currentTranslate = baseOffset + moveOffset;
+          const baseOffset = -(currentIndex * heroWidth);
+          const currentTranslate = baseOffset + diffX;
           track.style.transform = `translateX(${currentTranslate}px)`;
         }
       }
@@ -898,14 +993,14 @@
 
         if (isDragging) {
           const diffX = currentX - startX;
-          const threshold = heroSection.offsetWidth * 0.15; // 15% de ancho de pantalla
+          const threshold = heroSection.offsetWidth * 0.15; // 15% del ancho
 
           if (diffX < -threshold) {
-            goToSlide(currentSlide + 1);
+            goToSlide(currentIndex + 1, true);
           } else if (diffX > threshold) {
-            goToSlide(currentSlide - 1);
+            goToSlide(currentIndex - 1, true);
           } else {
-            goToSlide(currentSlide);
+            goToSlide(currentIndex, true);
           }
         }
 
@@ -925,11 +1020,17 @@
       heroSection.addEventListener('touchmove', dragMove, { passive: true });
       heroSection.addEventListener('touchend', dragEnd);
 
+      // Redimensionamiento de ventana
       window.addEventListener('resize', () => {
-        if (!isDragging) goToSlide(currentSlide);
+        if (!isDragging) {
+          goToSlide(currentIndex, false);
+        }
       });
 
-      goToSlide(0);
+      // Inicializar en el primer slide real (índice 1) sin animación
+      goToSlide(1, false);
+
+      // Iniciar autoplay de 5 segundos
       startAutoplay();
     }
 
@@ -1064,22 +1165,44 @@
 
     function initScrollEffects() {
       const header = document.querySelector('header');
+      const stripe = document.getElementById('header-stripe');
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('nav a[data-path]');
 
-      window.addEventListener('scroll', () => {
+      function updateHeaderOnScroll() {
         const scrollY = window.scrollY;
+        if (!header) return;
 
-        if (header) {
-          if (scrollY > 50) {
-            header.classList.add('bg-surface-container-lowest/95', 'shadow-lg');
-            header.classList.remove('bg-surface-container-lowest/90');
-          } else {
-            header.classList.remove('bg-surface-container-lowest/95', 'shadow-lg');
-            header.classList.add('bg-surface-container-lowest/90');
+        if (scrollY > 50) {
+          header.classList.add(
+            'bg-surface-container-lowest/95',
+            'backdrop-blur-md',
+            'shadow-lg'
+          );
+          header.classList.remove('bg-transparent');
+          if (stripe) {
+            stripe.classList.remove('opacity-0');
+            stripe.classList.add('opacity-100');
+          }
+        } else {
+          header.classList.remove(
+            'bg-surface-container-lowest/95',
+            'backdrop-blur-md',
+            'shadow-lg'
+          );
+          header.classList.add('bg-transparent');
+          if (stripe) {
+            stripe.classList.remove('opacity-100');
+            stripe.classList.add('opacity-0');
           }
         }
+      }
 
+      window.addEventListener('scroll', () => {
+        updateHeaderOnScroll();
+
+        // Scrollspy active state
+        const scrollY = window.scrollY;
         let currentId = '';
         sections.forEach(section => {
           const sectionTop = section.offsetTop - 120;
@@ -1099,60 +1222,13 @@
             }
           });
         }
-      });
-    }
+      }, { passive: true });
 
-    function initSecurityGuards() {
-      document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-      }, { passive: false });
-
-      document.addEventListener('keydown', function (e) {
-        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-        const ctrlKey = isMac ? e.metaKey : e.ctrlKey;
-
-        if (e.key === 'F12' || e.keyCode === 123) {
-          e.preventDefault();
-          return false;
-        }
-
-        if (ctrlKey && e.shiftKey && (
-          e.key === 'I' || e.key === 'i' ||
-          e.key === 'J' || e.key === 'j' ||
-          e.key === 'C' || e.key === 'c' ||
-          e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67
-        )) {
-          e.preventDefault();
-          return false;
-        }
-
-        if (ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
-          e.preventDefault();
-          return false;
-        }
-
-        if (ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) {
-          e.preventDefault();
-          return false;
-        }
-      }, { passive: false });
-
-      document.addEventListener('dragstart', function (e) {
-        if (e.target && e.target.nodeName === 'IMG') {
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      try {
-        const titleStyle = 'color: #ff5500; font-size: 24px; font-weight: bold; font-family: sans-serif;';
-        const textStyle = 'color: #ffffff; font-size: 13px; font-family: sans-serif; line-height: 1.5;';
-        console.log('%c¡ALTO AHÍ! 🏐', titleStyle);
-        console.log('%cEsta función del navegador está orientada a desarrolladores. El código fuente y los activos de Karasuno Voley Club están protegidos.', textStyle);
-      } catch (_) {}
+      // Verificación inicial al cargar la página
+      updateHeaderOnScroll();
     }
 
     function initApp() {
-      initSecurityGuards();
       initHeroCarousel();
       initVenueTabs();
       initMobileMenu();

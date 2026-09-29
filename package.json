@@ -6,14 +6,9 @@
     "start": "python -m http.server 3000",
     "build:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "watch:css": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "build:js": "javascript-obfuscator src/js/app.js --output dist/js/app.min.js --compact true --control-flow-flattening true --control-flow-flattening-threshold 0.75 --dead-code-injection true --dead-code-injection-threshold 0.4 --identifier-names-generator hexadecimal --self-defending true --string-array true --string-array-encoding base64 --split-strings true --transform-object-keys true",
-    "build:html": "html-minifier-terser --collapse-whitespace --remove-comments --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --use-short-doctype --minify-css true --minify-js true -o dist/index.html code.html",
-    "build:prod": "node scripts/build-prod.js",
-    "build": "npm run build:prod"
+    "build": "npm run build:css"
   },
   "dependencies": {
-    "html-minifier-terser": "^7.2.0",
-    "javascript-obfuscator": "^5.8.0",
     "tailwindcss": "^3.4.17"
   }
 }
