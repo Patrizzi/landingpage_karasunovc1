@@ -99,7 +99,8 @@ module.exports = {
         'body-md': ['Inter', 'sans-serif'],
         'body-sm': ['Inter', 'sans-serif'],
         'label-caps': ['Montserrat', 'sans-serif'],
-        'label-stat': ['Oswald', 'sans-serif']
+        'label-stat': ['Oswald', 'sans-serif'],
+        'cormorant': ['"Cormorant Garamond"', 'serif']
       }
     }
   },

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Oswald:wght@600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Story+Script&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 
   <!-- Compiled Tailwind CSS -->
@@ -30,7 +31,7 @@
           <img alt="Karasuno Voley Club Logo" class="w-full h-full object-cover" src="./assets/logo.jpg"/>
         </div>
         <div class="flex flex-col">
-          <span class="font-headline-sm text-lg uppercase tracking-wider text-on-surface leading-tight font-bold group-hover:text-primary transition-colors">KARASUNO</span>
+          <span class="font-cormorant font-['Cormorant_Garamond',serif] text-xl uppercase tracking-wider text-on-surface leading-tight font-bold group-hover:text-primary transition-colors">KARASUNO</span>
           <span class="font-label-caps uppercase text-primary tracking-widest text-[9px] leading-tight font-semibold">VOLEY CLUB</span>
         </div>
       </a>
@@ -124,13 +125,13 @@
           </div>
         </div>
 
-        <!-- Gradientes Optimizados: Mayor Protagonismo Visual y Contraste Quirúrgico del Texto -->
+        <!-- Gradientes Optimizados: Mayor Protagonismo Visual a la Derecha y Contraste en el Bloque Izquierdo -->
         <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/40 to-transparent z-10 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 via-surface-container-lowest/30 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent z-10 pointer-events-none"></div>
         <div class="absolute inset-0 bg-black/15 z-10 pointer-events-none"></div>
       </div>
 
-      <!-- Flechas de Navegación Lateral (Inspiradas en la referencia visual) -->
+      <!-- Flechas de Navegación Lateral -->
       <button id="hero-prev" type="button" aria-label="Categoría anterior" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-surface-container-low/80 hover:bg-primary-container text-white backdrop-blur-md border border-white/10 hover:border-primary-container flex items-center justify-center transition-all cursor-pointer shadow-lg select-none">
         <span class="material-symbols-outlined text-2xl pointer-events-none select-none">chevron_left</span>
       </button>
@@ -139,64 +140,98 @@
         <span class="material-symbols-outlined text-2xl pointer-events-none select-none">chevron_right</span>
       </button>
 
-      <!-- Hero Content -->
-      <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin pt-6 flex flex-col items-start">
+      <!-- Hero Content (Reestructurado a la Izquierda) -->
+      <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin pt-4 flex flex-col items-start">
         
-        <!-- Badge -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md mb-8">
-          <span class="w-2 h-2 rounded-full bg-primary-container pulse-dot"></span>
-          <span class="font-label-caps text-[10px] tracking-widest text-on-surface-variant uppercase font-semibold">TODAS LAS CATEGORIAS • CONSULTAR SEDES</span>
-        </div>
-
-        <h1 class="font-headline-hero text-headline-hero-mobile md:text-headline-hero text-on-surface uppercase tracking-tight max-w-4xl mb-6 leading-tight">
-          LLEVA TU NIVEL <br/>
-          <span class="text-primary-container">AL MÁXIMO</span>
-        </h1>
-
-        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl leading-relaxed mb-10 font-normal">
-          Formación de alto rendimiento, fundamentos técnicos de élite y disciplina deportiva. Descubre la potencia de volar sobre la red con Karasuno Voley Club.
-        </p>
-
-        <!-- Minimalist Buttons: Direct WhatsApp Contact & Anchor -->
-        <div class="flex flex-wrap items-center gap-4 mb-10">
-          <a class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-lg bg-primary-container text-white font-label-caps text-xs uppercase tracking-wider hover:bg-tertiary-container transition-colors cursor-pointer font-bold" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20entrenar%20con%20ustedes" target="_blank" rel="noopener noreferrer">
-            <span>Entrena con nosotros</span>
-            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-          </a>
+        <!-- Bloque Izquierdo Delimitado (deja libre el lado derecho) -->
+        <div class="flex flex-col items-start max-w-xl lg:max-w-lg xl:max-w-xl w-full">
           
-          <a class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/10 bg-surface-container-low/60 text-on-surface font-label-caps text-xs uppercase tracking-wider hover:bg-surface-container-high transition-colors" href="#sedes-horarios">
-            <span>Ver Horarios y Sedes</span>
-            <span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
-          </a>
-        </div>
+          <!-- Badge Oficial -->
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md mb-6">
+            <span class="w-2 h-2 rounded-full bg-primary-container pulse-dot"></span>
+            <span class="font-label-caps text-[10px] tracking-widest text-on-surface-variant uppercase font-semibold">TODAS LAS CATEGORIAS • CONSULTAR SEDES</span>
+          </div>
 
-        <!-- Paginación de Puntos (Dots) del Carrusel -->
-        <div id="hero-dots" class="flex items-center gap-2.5 mb-6 z-20">
-          <button type="button" aria-label="Ir a categoría Mayores" class="hero-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer" data-index="0"></button>
-          <button type="button" aria-label="Ir a categoría Jóvenes" class="hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer" data-index="1"></button>
-          <button type="button" aria-label="Ir a categoría Niños" class="hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer" data-index="2"></button>
+          <!-- Logo Oficial del Club -->
+          <div class="relative mb-5 group">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full p-1 bg-surface-container-lowest/80 backdrop-blur-md border-2 border-primary-container/60 shadow-xl shadow-black/60 flex items-center justify-center transition-transform duration-300 hover:scale-105">
+              <img alt="Karasuno Voley Club Logo" class="w-full h-full object-cover rounded-full pointer-events-none select-none" src="./assets/logo.jpg" draggable="false"/>
+            </div>
+            <div class="absolute -inset-1 rounded-full bg-primary-container/20 blur-sm -z-10 opacity-70"></div>
+          </div>
+
+          <!-- Título Principal "KARASUNO VC" (Cormorant Garamond) -->
+          <h1 class="font-cormorant font-['Cormorant_Garamond',serif] text-6xl sm:text-7xl md:text-8xl lg:text-8xl xl:text-9xl font-bold text-primary-container uppercase tracking-tight mb-4 leading-none drop-shadow-md">
+            KARASUNO VC
+          </h1>
+
+          <!-- Párrafo Descriptivo Solicitado -->
+          <p class="font-body-lg text-lg sm:text-xl text-white/90 leading-relaxed mb-8 font-medium drop-shadow-sm">
+            Ven y sé parte de esta familia, te esperamos
+          </p>
+
+          <!-- Botones de Acción (Alineación Limpia a la Izquierda) -->
+          <div class="flex flex-wrap items-center gap-4 mb-8">
+            <a class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-lg bg-primary-container text-white font-label-caps text-xs uppercase tracking-wider hover:bg-tertiary-container transition-colors cursor-pointer font-bold shadow-md shadow-black/40" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20entrenar%20con%20ustedes" target="_blank" rel="noopener noreferrer">
+              <span>Entrena con nosotros</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+            
+            <a class="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg border border-white/10 bg-surface-container-low/80 text-on-surface font-label-caps text-xs uppercase tracking-wider hover:bg-surface-container-high transition-colors backdrop-blur-sm" href="#sedes-horarios">
+              <span>Ver Horarios y Sedes</span>
+              <span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
+            </a>
+          </div>
+
+          <!-- Paginación de Puntos (Dots) del Carrusel -->
+          <div id="hero-dots" class="flex items-center gap-2.5 mb-6 z-20">
+            <button type="button" aria-label="Ir a categoría Mayores" class="hero-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer" data-index="0"></button>
+            <button type="button" aria-label="Ir a categoría Jóvenes" class="hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer" data-index="1"></button>
+            <button type="button" aria-label="Ir a categoría Niños" class="hero-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer" data-index="2"></button>
+          </div>
+
         </div>
       </div>
 
-      <!-- Minimalist Stats Bar -->
+      <!-- Minimalist Stats Bar: Filosofía del Club & Afiliación FPV -->
       <div class="relative z-20 max-w-[1280px] w-full mx-auto px-6 lg:px-margin">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 rounded-xl border border-white/5 bg-surface-container-low/70 backdrop-blur-sm">
-          <div class="flex flex-col">
-            <span class="font-headline-md text-3xl text-on-surface font-bold">98%</span>
-            <span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider mt-1">Nivel Competitivo</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6 lg:p-7 rounded-xl border border-white/5 bg-surface-container-low/70 backdrop-blur-sm divide-y sm:divide-y-0 divide-white/5">
+          
+          <!-- Bloque 1 -->
+          <div class="flex items-center gap-3.5">
+            <span class="w-1.5 h-8 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
+            <p class="font-headline-sm text-sm sm:text-base lg:text-[15px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
+              DISCIPLINA, ESFUERZO Y <span class="text-primary-container">TRABAJO EN EQUIPO</span>
+            </p>
           </div>
-          <div class="flex flex-col">
-            <span class="font-headline-md text-3xl text-on-surface font-bold">+500</span>
-            <span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider mt-1">Alumnos Formados</span>
+
+          <!-- Bloque 2 -->
+          <div class="flex items-center gap-3.5 sm:border-l sm:border-white/10 sm:pl-6 pt-4 sm:pt-0">
+            <span class="w-1.5 h-8 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
+            <p class="font-headline-sm text-sm sm:text-base lg:text-[15px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
+              FORMAMOS JUGADORES, PERO SOBRETODO, <span class="text-primary-container">GRANDES PERSONAS</span>
+            </p>
           </div>
-          <div class="flex flex-col">
-            <span class="font-headline-md text-3xl text-on-surface font-bold">4</span>
-            <span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider mt-1">Sedes Oficiales</span>
+
+          <!-- Bloque 3 -->
+          <div class="flex items-center gap-3.5 lg:border-l lg:border-white/10 lg:pl-6 pt-4 sm:pt-0">
+            <span class="w-1.5 h-8 rounded-full bg-primary-container hidden sm:block shrink-0" aria-hidden="true"></span>
+            <p class="font-headline-sm text-sm sm:text-base lg:text-[15px] xl:text-base uppercase tracking-wide font-bold text-on-surface leading-snug">
+              ÚNETE AL EQUIPO Y LLEVA TU PASIÓN <span class="text-primary-container">AL SIGUIENTE NIVEL</span>
+            </p>
           </div>
-          <div class="flex flex-col">
-            <span class="font-headline-md text-3xl text-primary font-bold">FPV</span>
-            <span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider mt-1">Afiliados a la FPV</span>
+
+          <!-- Bloque 4: Afiliados a la FPV -->
+          <div class="flex items-center gap-3.5 sm:border-l sm:border-white/10 sm:pl-6 lg:border-l lg:border-white/10 lg:pl-6 pt-4 sm:pt-0">
+            <div class="flex flex-col justify-center">
+              <div class="flex items-center gap-2">
+                <span class="font-headline-md text-2xl sm:text-3xl font-bold text-primary-container tracking-wider leading-none">FPV</span>
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold font-label-caps bg-primary-container/15 text-primary-container border border-primary-container/30 uppercase tracking-wider">OFICIAL</span>
+              </div>
+              <span class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold mt-1">Afiliados a la FPV</span>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
