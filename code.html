@@ -27,8 +27,8 @@
       
       <!-- Logo Oficial -->
       <a class="flex items-center gap-3.5 group cursor-pointer" href="#hero">
-        <div class="relative w-10 h-10 rounded-full overflow-hidden border border-white/20 group-hover:border-primary-container transition-colors bg-black flex items-center justify-center shadow-sm">
-          <img alt="Karasuno Voley Club Logo" class="w-full h-full object-cover" src="./assets/logo.jpg"/>
+        <div class="relative w-10 h-10 flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105">
+          <img alt="Karasuno Voley Club Logo" class="w-full h-full object-contain" src="./assets/logo-transparente.png"/>
         </div>
         <div class="flex flex-col drop-shadow-md">
           <span class="font-cormorant font-['Cormorant_Garamond',serif] text-xl uppercase tracking-wider text-white leading-tight font-bold group-hover:text-primary transition-colors">KARASUNO</span>
@@ -47,7 +47,7 @@
 
       <!-- Direct WhatsApp Action & Mobile Toggle (No glow, Direct Link) -->
       <div class="flex items-center gap-4">
-        <a class="group hidden sm:inline-flex items-center justify-center gap-2 font-label-caps text-xs uppercase px-5 py-2 rounded-lg border border-primary-container text-white bg-primary-container/20 hover:bg-primary-container transition-all cursor-pointer font-bold tracking-wider backdrop-blur-sm shadow-md" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20inscribirme" target="_blank" rel="noopener noreferrer">
+        <a class="group hidden sm:inline-flex items-center justify-center gap-2 font-label-caps text-xs uppercase px-5 py-2 rounded-lg bg-primary-container hover:bg-tertiary-container text-white transition-colors cursor-pointer font-bold tracking-wider shadow-md" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20inscribirme" target="_blank" rel="noopener noreferrer">
           <span>Inscríbete</span>
           <span class="material-symbols-outlined text-sm transition-transform duration-200 group-hover:translate-x-0.5">arrow_forward</span>
         </a>
@@ -70,7 +70,9 @@
   <div id="mobile-menu" class="hidden fixed inset-0 z-50 bg-surface-container-lowest/95 backdrop-blur-xl flex flex-col justify-between p-6">
     <div class="flex items-center justify-between border-b border-white/10 pb-4">
       <div class="flex items-center gap-3">
-        <img alt="Karasuno Logo" class="w-8 h-8 rounded-full object-cover border border-white/10" src="./assets/logo.jpg"/>
+        <div class="w-9 h-9 flex items-center justify-center shrink-0">
+          <img alt="Karasuno Logo" class="w-full h-full object-contain" src="./assets/logo-transparente.png"/>
+        </div>
         <span class="font-headline-sm text-lg uppercase tracking-wider text-white">KARASUNO CLUB</span>
       </div>
       <button id="close-mobile-menu" aria-label="Cerrar menú" class="text-white hover:text-primary transition-colors p-2">
@@ -149,27 +151,27 @@
         <!-- Bloque Izquierdo Delimitado (deja libre el lado derecho) -->
         <div class="flex flex-col items-start max-w-xl lg:max-w-lg xl:max-w-xl w-full">
           
-          <!-- Badge Oficial -->
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-surface-container-low/80 backdrop-blur-md mb-2.5 sm:mb-3">
-            <span class="w-2 h-2 rounded-full bg-primary-container pulse-dot"></span>
-            <span class="font-label-caps text-[10px] tracking-widest text-on-surface-variant uppercase font-semibold">TODAS LAS CATEGORIAS • CONSULTAR SEDES</span>
-          </div>
+          <!-- Composición Vertical Centrada: Título Superior, Escudo y Subtítulo Inferior -->
+          <div class="flex flex-col items-center justify-center text-center self-start gap-3 sm:gap-3.5 mb-3.5 sm:mb-4">
+            
+            <!-- Título Superior: KARASUNO -->
+            <h1 class="font-cormorant font-['Cormorant_Garamond',serif] text-4xl sm:text-5xl lg:text-5xl xl:text-6xl font-bold text-primary-container uppercase tracking-tight text-center leading-none">
+              KARASUNO
+            </h1>
 
-          <!-- Logo Oficial del Club -->
-          <div class="relative mb-2.5 sm:mb-3 group">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full p-1 bg-surface-container-lowest/80 backdrop-blur-md border-2 border-primary-container/60 shadow-xl shadow-black/60 flex items-center justify-center transition-transform duration-300 hover:scale-105">
-              <img alt="Karasuno Voley Club Logo" class="w-full h-full object-cover rounded-full pointer-events-none select-none" src="./assets/logo.jpg" draggable="false"/>
+            <!-- Escudo Oficial Limpio (PNG Transparente, Sin Cajas ni Sombras) -->
+            <div class="w-44 h-44 sm:w-52 sm:h-52 lg:w-56 lg:h-56 flex items-center justify-center shrink-0 transition-transform duration-300 hover:scale-105">
+              <img alt="Karasuno Voley Club Logo" class="w-full h-full object-contain pointer-events-none select-none" src="./assets/logo-transparente.png" draggable="false"/>
             </div>
-            <div class="absolute -inset-1 rounded-full bg-primary-container/20 blur-sm -z-10 opacity-70"></div>
-          </div>
 
-          <!-- Título Principal "KARASUNO VC" (Cormorant Garamond) -->
-          <h1 class="font-cormorant font-['Cormorant_Garamond',serif] text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-bold text-primary-container uppercase tracking-tight mb-2 leading-none drop-shadow-md">
-            KARASUNO VC
-          </h1>
+            <!-- Título Inferior: VOLEY CLUB (Misma jerarquía y tamaño que KARASUNO) -->
+            <h2 class="font-cormorant font-['Cormorant_Garamond',serif] text-4xl sm:text-5xl lg:text-5xl xl:text-6xl font-bold text-primary-container uppercase tracking-tight text-center leading-none">
+              VOLEY CLUB
+            </h2>
+          </div>
 
           <!-- Párrafo Descriptivo Solicitado -->
-          <p class="font-body-lg text-base sm:text-lg text-white/90 leading-snug mb-4 font-medium drop-shadow-sm max-w-lg">
+          <p class="font-body-lg text-base sm:text-lg text-white/90 leading-snug mb-3.5 sm:mb-4 font-medium drop-shadow-sm max-w-lg">
             Ven y sé parte de esta familia, te esperamos
           </p>
 
@@ -262,7 +264,7 @@
           <!-- Card 1: Categoría Mayores (Visual Only) -->
           <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
             <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
-              <img alt="Logo Karasuno - Categoría Mayores" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90" src="./assets/logo.jpg"/>
+              <img alt="Logo Karasuno - Categoría Mayores" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-container-lowest/90 text-primary font-label-caps text-[9px] uppercase tracking-wider border border-primary-container/30">
                 ADULTOS & COMPETENCIA
               </span>
@@ -276,7 +278,7 @@
           <!-- Card 2: Categoría Jóvenes (Visual Only) -->
           <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
             <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
-              <img alt="Logo Karasuno - Categoría Jóvenes" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90" src="./assets/logo.jpg"/>
+              <img alt="Logo Karasuno - Categoría Jóvenes" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-container-lowest/90 text-secondary font-label-caps text-[9px] uppercase tracking-wider border border-secondary-container/30">
                 SUB 15 • SUB 17 • SUB 19
               </span>
@@ -290,7 +292,7 @@
           <!-- Card 3: Categoría Niños (Visual Only) -->
           <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
             <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
-              <img alt="Logo Karasuno - Categoría Niños" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90" src="./assets/logo.jpg"/>
+              <img alt="Logo Karasuno - Categoría Niños" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-container-lowest/90 text-on-surface-variant font-label-caps text-[9px] uppercase tracking-wider border border-white/10">
                 SUB 10 • SUB 12 • SUB 13 • SUB 14
               </span>
@@ -549,7 +551,9 @@
         
         <div class="flex flex-col gap-3">
           <div class="flex items-center gap-2.5">
-            <img alt="Karasuno Logo" class="w-7 h-7 rounded-full object-cover border border-white/10" src="./assets/logo.jpg"/>
+            <div class="w-7 h-7 rounded-full overflow-hidden border border-white/10 bg-black flex items-center justify-center shrink-0">
+              <img alt="Karasuno Logo" class="w-full h-full object-contain p-0.5 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
+            </div>
             <span class="font-headline-sm text-base uppercase tracking-wider text-on-surface font-bold">KARASUNO <span class="text-primary">CLUB</span></span>
           </div>
           <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed">

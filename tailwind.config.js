@@ -35,7 +35,7 @@ module.exports = {
         // --- IDENTIDAD NARANJA Y ACENTOS (ESTRICTAMENTE INTOCABLES) ---
         'primary': '#ffb59c',
         'on-primary': '#5c1900',
-        'primary-container': '#ff5708',
+        'primary-container': '#ef720d',
         'on-primary-container': '#511500',
         'inverse-primary': '#aa3600',
         'primary-fixed': '#ffdbcf',
@@ -54,7 +54,7 @@ module.exports = {
         
         'tertiary': '#ffb68e',
         'on-tertiary': '#542200',
-        'tertiary-container': '#eb6b01',
+        'tertiary-container': '#d6650b',
         'on-tertiary-container': '#491d00',
         'tertiary-fixed': '#ffdbca',
         'tertiary-fixed-dim': '#ffb68e',
