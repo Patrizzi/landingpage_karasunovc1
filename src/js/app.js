@@ -608,6 +608,7 @@ function initFaqAccordion() {
 function initScrollEffects() {
   const header = document.querySelector('header');
   const stripe = document.getElementById('header-stripe');
+  const progressBar = document.getElementById('scroll-progress');
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('nav a[data-path]');
 
@@ -640,8 +641,17 @@ function initScrollEffects() {
     }
   }
 
+  function updateScrollProgress() {
+    if (!progressBar) return;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    progressBar.style.width = scrolled + '%';
+  }
+
   window.addEventListener('scroll', () => {
     updateHeaderOnScroll();
+    updateScrollProgress();
 
     // Scrollspy active state
     const scrollY = window.scrollY;
@@ -668,6 +678,26 @@ function initScrollEffects() {
 
   // Verificación inicial al cargar la página
   updateHeaderOnScroll();
+  updateScrollProgress();
+}
+
+// ----------------------------------------------------------------------------
+// 6. WIDGET FLOTANTE DE WHATSAPP (CIERRE DE BURBUJA)
+// ----------------------------------------------------------------------------
+function initWhatsAppWidget() {
+  const closeBtn = document.getElementById('close-whatsapp-bubble');
+  const bubble = document.getElementById('whatsapp-bubble');
+
+  if (closeBtn && bubble) {
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      bubble.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+      setTimeout(() => {
+        bubble.classList.add('hidden');
+      }, 300);
+    });
+  }
 }
 
 // ----------------------------------------------------------------------------
@@ -679,6 +709,7 @@ function initApp() {
   initMobileMenu();
   initFaqAccordion();
   initScrollEffects();
+  initWhatsAppWidget();
 }
 
 if (document.readyState === 'loading') {

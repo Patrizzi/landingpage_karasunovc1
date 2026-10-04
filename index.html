@@ -57,10 +57,9 @@
       </div>
     </div>
 
-    <!-- Barra de acento decorativa institucional (Naranja y Negro - Aparece al hacer scroll) -->
-    <div id="header-stripe" class="absolute bottom-0 left-0 right-0 w-full h-[3px] flex opacity-0 transition-opacity duration-300 pointer-events-none" aria-hidden="true">
-      <div class="w-1/2 bg-primary-container"></div>
-      <div class="w-1/2 bg-surface-container-high"></div>
+    <!-- Barra de progreso de scroll (Scroll Progress Bar - Aparece al hacer scroll) -->
+    <div id="header-stripe" class="absolute bottom-0 left-0 right-0 w-full h-[3px] bg-surface-container-high opacity-0 transition-opacity duration-300 pointer-events-none" aria-hidden="true">
+      <div id="scroll-progress" class="h-full w-0 bg-primary-container"></div>
     </div>
   </header>
 
@@ -227,13 +226,14 @@
           </div>
 
           <!-- Bloque 4: Afiliados a la FPV -->
-          <div class="flex items-center gap-3 sm:border-l sm:border-white/10 sm:pl-4 lg:border-l lg:border-white/10 lg:pl-6 pt-3 sm:pt-0">
+          <div class="flex items-center gap-3 sm:gap-3.5 sm:border-l sm:border-white/10 sm:pl-4 lg:border-l lg:border-white/10 lg:pl-6 pt-3 sm:pt-0">
+            <img alt="Federación Peruana de Voleibol" class="h-10 sm:h-11 lg:h-12 w-auto object-contain shrink-0" src="./assets/escudo-fpv.png"/>
             <div class="flex flex-col justify-center">
               <div class="flex items-center gap-2">
-                <span class="font-headline-md text-2xl lg:text-3xl font-bold text-primary-container tracking-wider leading-none">FPV</span>
+                <span class="font-headline-md text-xl lg:text-2xl font-bold text-primary-container tracking-wider leading-none">FPV</span>
                 <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold font-label-caps bg-primary-container/15 text-primary-container border border-primary-container/30 uppercase tracking-wider">OFICIAL</span>
               </div>
-              <span class="font-label-caps text-[10px] lg:text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold mt-0.5">Afiliados a la FPV</span>
+              <span class="font-label-caps text-[10px] lg:text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold mt-1">Afiliados a la FPV</span>
             </div>
           </div>
 
@@ -255,51 +255,57 @@
             </h2>
           </div>
           <p class="font-body-md text-on-surface-variant max-w-md text-sm leading-relaxed">
-            Metodología integral estructurada para cada etapa deportiva: Mayores, Jóvenes y Niños.
+            Metodología integral estructurada para cada etapa deportiva: Niños, Jóvenes y Mayores.
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <!-- Card 1: Categoría Mayores (Visual Only) -->
-          <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
-            <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
-              <img alt="Logo Karasuno - Categoría Mayores" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-container-lowest/90 text-primary font-label-caps text-[9px] uppercase tracking-wider border border-primary-container/30">
-                ADULTOS & COMPETENCIA
-              </span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-              <h3 class="font-headline-sm text-xl text-on-surface uppercase font-bold mb-2 group-hover:text-primary transition-colors">Categoría Mayores</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Formación táctica de alto nivel, preparación física avanzada y competición mixta para adultos y deportistas consolidados.</p>
-            </div>
-          </div>
-
-          <!-- Card 2: Categoría Jóvenes (Visual Only) -->
-          <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
-            <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
-              <img alt="Logo Karasuno - Categoría Jóvenes" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-container-lowest/90 text-secondary font-label-caps text-[9px] uppercase tracking-wider border border-secondary-container/30">
-                SUB 15 • SUB 17 • SUB 19
-              </span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-              <h3 class="font-headline-sm text-xl text-on-surface uppercase font-bold mb-2 group-hover:text-primary transition-colors">Categoría Jóvenes</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Desarrollo técnico acelerado, perfeccionamiento de fundamentos, salto táctico y disciplina deportiva competitiva para jóvenes atletas.</p>
-            </div>
-          </div>
-
-          <!-- Card 3: Categoría Niños (Visual Only) -->
+          <!-- Card 1: Categoría Niños -->
           <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
             <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
               <img alt="Logo Karasuno - Categoría Niños" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-container-lowest/90 text-on-surface-variant font-label-caps text-[9px] uppercase tracking-wider border border-white/10">
-                SUB 10 • SUB 12 • SUB 13 • SUB 14
-              </span>
             </div>
+            
             <div class="p-6 flex flex-col flex-grow">
               <h3 class="font-headline-sm text-xl text-on-surface uppercase font-bold mb-2 group-hover:text-primary transition-colors">Categoría Niños</h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Iniciación formativa motriz, coordinación, valores de equipo y los primeros fundamentos del voleibol desde temprana edad.</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-6">Iniciación formativa motriz, coordinación, valores de equipo y los primeros fundamentos del voleibol desde temprana edad.</p>
+              
+              <a href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20consultar%20sobre%20la%20categor%C3%ADa%20Ni%C3%B1os" target="_blank" rel="noopener noreferrer" class="mt-auto w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-transparent border border-secondary-container/40 text-secondary font-label-caps text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-primary-container hover:border-primary-container hover:text-white hover:shadow-lg active:bg-tertiary-container active:border-tertiary-container active:scale-[0.98] transition-all duration-300">
+                ¡CONSULTA AQUÍ!
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2: Categoría Jóvenes -->
+          <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
+            <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
+              <img alt="Logo Karasuno - Categoría Jóvenes" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
+            </div>
+            
+            <div class="p-6 flex flex-col flex-grow">
+              <h3 class="font-headline-sm text-xl text-on-surface uppercase font-bold mb-2 group-hover:text-primary transition-colors">Categoría Jóvenes</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-6">Desarrollo técnico acelerado, perfeccionamiento de fundamentos, salto táctico y disciplina deportiva competitiva para jóvenes atletas.</p>
+              
+              <a href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20consultar%20sobre%20la%20categor%C3%ADa%20J%C3%B3venes" target="_blank" rel="noopener noreferrer" class="mt-auto w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-transparent border border-secondary-container/40 text-secondary font-label-caps text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-primary-container hover:border-primary-container hover:text-white hover:shadow-lg active:bg-tertiary-container active:border-tertiary-container active:scale-[0.98] transition-all duration-300">
+                ¡CONSULTA AQUÍ!
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3: Categoría Mayores -->
+          <div class="group flex flex-col rounded-xl border border-white/5 bg-surface-container-low hover:border-white/20 transition-all overflow-hidden">
+            <div class="relative h-64 w-full overflow-hidden bg-black flex items-center justify-center p-8 border-b border-white/5">
+              <img alt="Logo Karasuno - Categoría Mayores" class="h-full max-h-48 object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 mix-blend-screen" src="./assets/nuevo-logo.jpg"/>
+            </div>
+            
+            <div class="p-6 flex flex-col flex-grow">
+              <h3 class="font-headline-sm text-xl text-on-surface uppercase font-bold mb-2 group-hover:text-primary transition-colors">Categoría Mayores</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-6">Formación táctica de alto nivel, preparación física avanzada y competición mixta para adultos y deportistas consolidados.</p>
+              
+              <a href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20consultar%20sobre%20la%20categor%C3%ADa%20Mayores" target="_blank" rel="noopener noreferrer" class="mt-auto w-full inline-flex items-center justify-center px-5 py-3 rounded-lg bg-transparent border border-secondary-container/40 text-secondary font-label-caps text-xs font-bold uppercase tracking-widest cursor-pointer hover:bg-primary-container hover:border-primary-container hover:text-white hover:shadow-lg active:bg-tertiary-container active:border-tertiary-container active:scale-[0.98] transition-all duration-300">
+                ¡CONSULTA AQUÍ!
+              </a>
             </div>
           </div>
 
@@ -531,12 +537,34 @@
     </section>
 
     <!-- ======================================================================
-         FLOATING WHATSAPP BUTTON (DIRECTO, SIN MODAL)
+         FLOATING WHATSAPP WIDGET CON CHAT BUBBLE
          ====================================================================== -->
-    <div class="fixed bottom-6 right-6 z-40 flex items-center">
-      <a aria-label="WhatsApp Karasuno Club" class="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#25D366] text-white hover:bg-[#20bd5a] transition-colors shadow-md" href="https://wa.me/51969778179?text=Hola%20Karasuno,%20tengo%20una%20consulta%20sobre%20las%20inscripciones" rel="noopener noreferrer" target="_blank">
-        <span class="material-symbols-outlined text-xl">chat</span>
-        <span class="font-label-caps text-[11px] tracking-wider uppercase font-semibold">969 778 179</span>
+    <div id="whatsapp-widget" class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 select-none">
+      
+      <!-- Globo de Mensaje (Chat Bubble) -->
+      <div id="whatsapp-bubble" class="relative max-w-[240px] bg-[#1a1a1a] border border-primary-container text-white rounded-2xl p-3.5 pr-8 shadow-2xl transition-all duration-300 ease-out">
+        <!-- Botón de Cierre (X) -->
+        <button id="close-whatsapp-bubble" type="button" aria-label="Cerrar mensaje" class="absolute top-2.5 right-2.5 text-white/60 hover:text-primary-container transition-colors p-1 cursor-pointer flex items-center justify-center">
+          <span class="material-symbols-outlined text-sm leading-none">close</span>
+        </button>
+
+        <!-- Contenido del Mensaje -->
+        <a href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20inscribirme" target="_blank" rel="noopener noreferrer" class="block cursor-pointer group">
+          <p class="font-bold text-sm text-white leading-tight group-hover:text-primary-container transition-colors">
+            ¿Deseas inscribirte?
+          </p>
+          <p class="text-xs text-gray-300 mt-1 leading-snug">
+            Escríbenos 📩
+          </p>
+        </a>
+
+        <!-- Flecha (Tail) apuntando al botón -->
+        <div class="absolute -bottom-1.5 right-6 w-3 h-3 bg-[#1a1a1a] border-b border-r border-primary-container rotate-45" aria-hidden="true"></div>
+      </div>
+
+      <!-- Botón Circular de WhatsApp -->
+      <a id="whatsapp-button" aria-label="Contactar por WhatsApp" class="relative w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-pointer group" href="https://wa.me/51969778179?text=Hola%20Karasuno%20Voley%20Club,%20deseo%20inscribirme" target="_blank" rel="noopener noreferrer">
+        <img alt="WhatsApp Karasuno Club" class="w-full h-full object-contain p-2.5 pointer-events-none select-none drop-shadow-sm group-hover:rotate-6 transition-transform duration-300" src="./assets/whatsapp.png"/>
       </a>
     </div>
 
@@ -1170,6 +1198,7 @@
     function initScrollEffects() {
       const header = document.querySelector('header');
       const stripe = document.getElementById('header-stripe');
+      const progressBar = document.getElementById('scroll-progress');
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('nav a[data-path]');
 
@@ -1202,8 +1231,17 @@
         }
       }
 
+      function updateScrollProgress() {
+        if (!progressBar) return;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        progressBar.style.width = scrolled + '%';
+      }
+
       window.addEventListener('scroll', () => {
         updateHeaderOnScroll();
+        updateScrollProgress();
 
         // Scrollspy active state
         const scrollY = window.scrollY;
@@ -1230,6 +1268,23 @@
 
       // Verificación inicial al cargar la página
       updateHeaderOnScroll();
+      updateScrollProgress();
+    }
+
+    function initWhatsAppWidget() {
+      const closeBtn = document.getElementById('close-whatsapp-bubble');
+      const bubble = document.getElementById('whatsapp-bubble');
+
+      if (closeBtn && bubble) {
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          bubble.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+          setTimeout(() => {
+            bubble.classList.add('hidden');
+          }, 300);
+        });
+      }
     }
 
     function initApp() {
@@ -1238,6 +1293,7 @@
       initMobileMenu();
       initFaqAccordion();
       initScrollEffects();
+      initWhatsAppWidget();
     }
 
     if (document.readyState === 'loading') {
