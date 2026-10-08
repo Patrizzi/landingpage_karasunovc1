@@ -179,8 +179,6 @@ function initHeroCarousel() {
   const heroSection = document.getElementById('hero');
   const track = document.getElementById('hero-track');
   const dots = document.querySelectorAll('.hero-dot');
-  const prevBtn = document.getElementById('hero-prev');
-  const nextBtn = document.getElementById('hero-next');
 
   if (!track || !heroSection) return;
 
@@ -320,28 +318,6 @@ function initHeroCarousel() {
     startAutoplay();
   }
 
-  // Botón Anterior
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isTransitioning) return;
-      goToSlide(currentIndex - 1, true);
-      resetAutoplay();
-    });
-  }
-
-  // Botón Siguiente
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (isTransitioning) return;
-      goToSlide(currentIndex + 1, true);
-      resetAutoplay();
-    });
-  }
-
   // Puntos / Dots
   dots.forEach(dot => {
     dot.addEventListener('click', (e) => {
@@ -372,7 +348,7 @@ function initHeroCarousel() {
 
   function dragStart(e) {
     if (e.type === 'mousedown' && e.button !== 0) return;
-    if (e.target.closest('button, a, input, select, textarea, [role="button"], #hero-dots, #hero-prev, #hero-next')) {
+    if (e.target.closest('button, a, input, select, textarea, [role="button"], #hero-dots')) {
       return;
     }
 
@@ -459,78 +435,211 @@ function initHeroCarousel() {
 }
 
 // ----------------------------------------------------------------------------
-// 1. SEDES & HORARIOS (DYNAMIC TABS)
+// 1. SEDES & HORARIOS (CAROUSEL DE TARJETAS COMPLETAS CON ARRASTRE Y DOTS)
 // ----------------------------------------------------------------------------
-function initVenueTabs() {
-  const tabs = document.querySelectorAll('.venue-tab');
-  const venueTitle = document.getElementById('venue-title');
-  const venueStatus = document.getElementById('venue-status');
-  const venueAddress = document.getElementById('venue-address');
-  const venueMapsLink = document.getElementById('venue-maps-link');
-  const venueSchedulesContainer = document.getElementById('venue-schedules-container');
+function initVenuesCarousel() {
+  const slider = document.getElementById('venues-slider');
+  const track = document.getElementById('venues-track');
+  const tabs = document.querySelectorAll('#venue-tabs .venue-tab');
+  const dots = document.querySelectorAll('#venues-dots .venue-dot');
+  const prevBtn = document.getElementById('venues-prev');
+  const nextBtn = document.getElementById('venues-next');
 
-  if (!tabs.length || !venueTitle) return;
+  if (!track || !slider) return;
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const venueKey = tab.dataset.venue;
-      const venue = VENUES_DATA[venueKey];
-      if (!venue) return;
+  const slides = track.querySelectorAll('.venue-card, .venue-details-card');
+  const maxIndex = slides.length - 1;
+  if (maxIndex < 0) return;
 
-      // Update active tab styles (minimalist, no glow)
-      tabs.forEach(t => {
-        t.classList.remove('bg-primary-container', 'text-white');
-        t.classList.add('bg-surface-container-low', 'border', 'border-white/5', 'text-on-surface-variant');
-      });
-      tab.classList.remove('bg-surface-container-low', 'border', 'border-white/5', 'text-on-surface-variant');
-      tab.classList.add('bg-primary-container', 'text-white');
+  let currentIndex = 0;
+  let isTransitioning = false;
+  const TRANSITION_DURATION = 500;
 
-      // Animate container out/in
-      const container = document.getElementById('venue-details-card');
-      if (container) {
-        container.style.opacity = '0.4';
-        container.style.transform = 'translateY(4px)';
-        container.style.transition = 'all 0.25s ease';
+  // Actualiza los estilos visuales de las pestañas y centra la activa
+  function updateTabs(idx, shouldScroll = true) {
+    tabs.forEach((tab, i) => {
+      const isActive = (i === idx);
+      if (isActive) {
+        tab.className = 'venue-tab shrink-0 snap-center px-5 py-2.5 rounded-full font-label-caps text-xs uppercase bg-primary-container text-white transition-colors cursor-pointer font-bold';
+        tab.setAttribute('aria-selected', 'true');
+      } else {
+        tab.className = 'venue-tab shrink-0 snap-center px-5 py-2.5 rounded-full font-label-caps text-xs uppercase bg-surface-container-low border border-white/5 text-on-surface-variant hover:text-white hover:bg-surface-container transition-colors cursor-pointer';
+        tab.setAttribute('aria-selected', 'false');
       }
+    });
 
-      setTimeout(() => {
-        // Update content
-        venueTitle.textContent = venue.name;
-        venueStatus.textContent = venue.statusBadge;
-        venueAddress.textContent = venue.address;
-        if (venueMapsLink) venueMapsLink.href = venue.mapsUrl;
+    // Centrado automático del tab activo con scroll suave en vista móvil
+    const activeTab = tabs[idx];
+    if (activeTab && shouldScroll) {
+      activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }
 
-        // Status badge colors
-        if (venue.statusColor === 'amber') {
-          venueStatus.className = 'px-2 py-0.5 rounded text-[10px] font-label-caps uppercase bg-amber-500/10 text-amber-300 border border-amber-500/20';
-        } else {
-          venueStatus.className = 'px-2 py-0.5 rounded text-[10px] font-label-caps uppercase bg-emerald-500/10 text-emerald-300 border border-emerald-500/20';
-        }
+  // Sincronización opcional de dots si están presentes en el DOM
+  function updateDots(idx) {
+    if (!dots || !dots.length) return;
+    dots.forEach((dot, i) => {
+      if (i === idx) {
+        dot.className = 'venue-dot w-8 h-2 rounded-full bg-primary-container transition-all cursor-pointer';
+      } else {
+        dot.className = 'venue-dot w-2 h-2 rounded-full bg-white/40 hover:bg-white/70 transition-all cursor-pointer';
+      }
+    });
+  }
 
-        // Render schedules
-        if (venueSchedulesContainer) {
-          venueSchedulesContainer.innerHTML = venue.schedules.map(sch => `
-            <div class="flex flex-col p-5 rounded-lg border border-white/5 bg-surface-container-lowest/60 hover:border-white/10 transition-colors">
-              <div class="flex items-center justify-between mb-3 text-xs">
-                <span class="font-label-caps text-primary text-[10px] uppercase tracking-wider">${sch.badge}</span>
-                <span class="text-on-surface-variant font-label-caps text-[10px] px-2 py-0.5 rounded bg-white/5">${sch.slots}</span>
-              </div>
-              <span class="font-title-md text-base text-on-surface font-semibold">${sch.days}</span>
-              <span class="font-headline-sm text-xl text-on-surface font-bold mt-1 mb-4">${sch.hours}</span>
-              <div class="space-y-1.5 mt-auto pt-3 border-t border-white/5 text-on-surface-variant font-body-sm text-xs">
-                ${sch.details.map(item => `<div class="flex items-center gap-2"><span>• ${item}</span></div>`).join('')}
-              </div>
-            </div>
-          `).join('');
-        }
+  // Desplazamiento del track del carrusel hacia el índice objetivo
+  function goToSlide(targetIndex, animate = true, shouldScrollTab = true) {
+    currentIndex = Math.max(0, Math.min(targetIndex, maxIndex));
+    updateTabs(currentIndex, shouldScrollTab);
+    updateDots(currentIndex);
 
-        if (container) {
-          container.style.opacity = '1';
-          container.style.transform = 'translateY(0)';
-        }
-      }, 150);
+    if (animate) {
+      isTransitioning = true;
+      track.style.transition = `transform ${TRANSITION_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1)`;
+    } else {
+      track.style.transition = 'none';
+      isTransitioning = false;
+    }
+
+    const percent = -(currentIndex * 100);
+    track.style.transform = `translateX(${percent}%)`;
+  }
+
+  track.addEventListener('transitionend', (e) => {
+    if (e.target !== track || e.propertyName !== 'transform') return;
+    isTransitioning = false;
+  });
+
+  // Event Listeners: Clic en Tabs de sedes (Controlador oficial de paginación)
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      const idx = tab.getAttribute('data-index') !== null
+        ? parseInt(tab.getAttribute('data-index'), 10)
+        : index;
+      if (!isNaN(idx)) {
+        goToSlide(idx, true, true);
+      }
     });
   });
+
+  // Flechas Anterior y Siguiente
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentIndex > 0) goToSlide(currentIndex - 1, true, true);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentIndex < maxIndex) goToSlide(currentIndex + 1, true, true);
+    });
+  }
+
+  // Clic en Puntos (Dots) si están presentes
+  if (dots && dots.length) {
+    dots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        const idx = parseInt(dot.getAttribute('data-index'), 10);
+        if (!isNaN(idx)) goToSlide(idx, true, true);
+      });
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // INTERACCIÓN DRAG & SWIPE EN TIEMPO REAL (ESCRITORIO Y DISPOSITIVOS TÁCTILES)
+  // --------------------------------------------------------------------------
+  let isMouseDown = false;
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
+
+  function getPositionX(e) {
+    return e.type.includes('mouse')
+      ? e.clientX
+      : (e.touches && e.touches[0] ? e.touches[0].clientX : (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : 0));
+  }
+
+  function dragStart(e) {
+    if (e.type === 'mousedown' && e.button !== 0) return;
+    if (e.target.closest('button, a, input, select, textarea, [role="button"]')) {
+      return;
+    }
+
+    isMouseDown = true;
+    isDragging = false;
+    startX = getPositionX(e);
+    currentX = startX;
+    track.style.transition = 'none';
+  }
+
+  function dragMove(e) {
+    if (!isMouseDown) return;
+    currentX = getPositionX(e);
+    const diffX = currentX - startX;
+
+    if (!isDragging && Math.abs(diffX) > 6) {
+      isDragging = true;
+      track.classList.remove('cursor-grab');
+      track.classList.add('cursor-grabbing');
+    }
+
+    if (isDragging) {
+      const sliderWidth = slider.offsetWidth;
+      const baseOffset = -(currentIndex * sliderWidth);
+      // Resistencia elástica en los límites
+      let adjustedDiffX = diffX;
+      if ((currentIndex === 0 && diffX > 0) || (currentIndex === maxIndex && diffX < 0)) {
+        adjustedDiffX = diffX * 0.25;
+      }
+      const currentTranslate = baseOffset + adjustedDiffX;
+      track.style.transform = `translateX(${currentTranslate}px)`;
+    }
+  }
+
+  function dragEnd() {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+
+    track.classList.remove('cursor-grabbing');
+    track.classList.add('cursor-grab');
+
+    if (isDragging) {
+      const diffX = currentX - startX;
+      const threshold = slider.offsetWidth * 0.15; // 15% del ancho del slide
+
+      if (diffX < -threshold && currentIndex < maxIndex) {
+        goToSlide(currentIndex + 1, true, true);
+      } else if (diffX > threshold && currentIndex > 0) {
+        goToSlide(currentIndex - 1, true, true);
+      } else {
+        goToSlide(currentIndex, true, true);
+      }
+    }
+
+    isDragging = false;
+  }
+
+  track.addEventListener('mousedown', dragStart);
+  window.addEventListener('mousemove', dragMove);
+  window.addEventListener('mouseup', dragEnd);
+
+  track.addEventListener('touchstart', dragStart, { passive: true });
+  track.addEventListener('touchmove', dragMove, { passive: true });
+  track.addEventListener('touchend', dragEnd);
+
+  // Redimensionamiento de ventana
+  window.addEventListener('resize', () => {
+    if (!isDragging) {
+      goToSlide(currentIndex, false, false);
+    }
+  });
+
+  // Inicializar en la primera sede sin salto vertical en la carga inicial
+  goToSlide(0, false, false);
 }
 
 // ----------------------------------------------------------------------------
@@ -579,24 +688,28 @@ function initFaqAccordion() {
     if (!header || !content) return;
 
     header.addEventListener('click', () => {
-      const isOpen = !content.classList.contains('hidden');
+      const isClosed = content.classList.contains('grid-rows-[0fr]');
 
-      // Close all other items
+      // Cerrar los demás items (Acordeón único)
       faqItems.forEach(otherItem => {
         const otherContent = otherItem.querySelector('.faq-content');
         const otherIcon = otherItem.querySelector('.faq-icon');
         if (otherContent && otherContent !== content) {
-          otherContent.classList.add('hidden');
+          otherContent.classList.remove('grid-rows-[1fr]', 'opacity-100');
+          otherContent.classList.add('grid-rows-[0fr]', 'opacity-0');
           if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
         }
       });
 
-      if (isOpen) {
-        content.classList.add('hidden');
-        if (icon) icon.style.transform = 'rotate(0deg)';
-      } else {
-        content.classList.remove('hidden');
+      // Alternar el item actual
+      if (isClosed) {
+        content.classList.remove('grid-rows-[0fr]', 'opacity-0');
+        content.classList.add('grid-rows-[1fr]', 'opacity-100');
         if (icon) icon.style.transform = 'rotate(180deg)';
+      } else {
+        content.classList.remove('grid-rows-[1fr]', 'opacity-100');
+        content.classList.add('grid-rows-[0fr]', 'opacity-0');
+        if (icon) icon.style.transform = 'rotate(0deg)';
       }
     });
   });
@@ -649,36 +762,49 @@ function initScrollEffects() {
     progressBar.style.width = scrolled + '%';
   }
 
-  window.addEventListener('scroll', () => {
-    updateHeaderOnScroll();
-    updateScrollProgress();
-
-    // Scrollspy active state
+  function updateScrollspy() {
     const scrollY = window.scrollY;
+    const offset = 250; // Margen natural de cálculo (200px - 300px)
     let currentId = '';
+
     sections.forEach(section => {
-      const sectionTop = section.offsetTop - 120;
+      const sectionTop = section.offsetTop - offset;
       const sectionHeight = section.offsetHeight;
       if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
         currentId = section.getAttribute('id');
       }
     });
 
+    // Asegurar que si el usuario llega al final de la página se resalte la última sección (contacto)
+    if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+      const lastSection = sections[sections.length - 1];
+      if (lastSection) currentId = lastSection.getAttribute('id');
+    }
+
     if (currentId) {
       navLinks.forEach(link => {
-        link.classList.remove('text-primary');
-        link.classList.add('text-on-surface-variant');
-        if (link.getAttribute('href') === `#${currentId}`) {
-          link.classList.add('text-primary');
-          link.classList.remove('text-on-surface-variant');
+        const targetHref = link.getAttribute('href');
+        if (targetHref === `#${currentId}`) {
+          link.classList.add('text-primary', 'drop-shadow-lg');
+          link.classList.remove('text-white/90', 'text-on-surface-variant');
+        } else {
+          link.classList.remove('text-primary', 'drop-shadow-lg');
+          link.classList.add('text-white/90');
         }
       });
     }
+  }
+
+  window.addEventListener('scroll', () => {
+    updateHeaderOnScroll();
+    updateScrollProgress();
+    updateScrollspy();
   }, { passive: true });
 
   // Verificación inicial al cargar la página
   updateHeaderOnScroll();
   updateScrollProgress();
+  updateScrollspy();
 }
 
 // ----------------------------------------------------------------------------
@@ -705,7 +831,7 @@ function initWhatsAppWidget() {
 // ----------------------------------------------------------------------------
 function initApp() {
   initHeroCarousel();
-  initVenueTabs();
+  initVenuesCarousel();
   initMobileMenu();
   initFaqAccordion();
   initScrollEffects();

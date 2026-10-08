@@ -90,3 +90,14 @@
   }
 }
 
+@layer utilities {
+  /* Ocultar barra de desplazamiento manteniendo el scroll táctil / snap */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
